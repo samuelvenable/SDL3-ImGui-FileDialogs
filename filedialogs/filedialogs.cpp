@@ -281,9 +281,6 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(0));
     }
-    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CAPTION").empty()) {
-      ngs::fs::environment_set_variable("IMGUI_DIALOG_CAPTION", " ");
-    }
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "direct3d12,direct3d11,direct3d,metal,vulkan,gpu,software");
     #if defined(SDL_VIDEO_DRIVER_X11)
     ngs::fs::environment_set_variable("SDL_VIDEODRIVER", "x11");
@@ -444,7 +441,7 @@ namespace {
         buttons.push_back(IFD_OK);
         ImGuiAl::MsgBox msgbox;
         ImGui::PushID("##msgbox");
-        msgbox.Init((title + "##msgbox").c_str(), message.c_str(), buttons, false);
+        msgbox.Init("##msgbox", message.c_str(), buttons, false);
         msgbox.Open();
         int selected = msgbox.Draw();
         switch (selected) {
@@ -459,7 +456,7 @@ namespace {
         buttons.push_back(IFD_NO);
         ImGuiAl::MsgBox msgbox;
         ImGui::PushID("##msgbox");
-        msgbox.Init((title + "##msgbox").c_str(), message.c_str(), buttons, false);
+        msgbox.Init("##msgbox", message.c_str(), buttons, false);
         msgbox.Open();
         int selected = msgbox.Draw();
         switch (selected) {
@@ -476,7 +473,7 @@ namespace {
         buttons.push_back(IFD_CANCEL);
         ImGuiAl::MsgBox msgbox;
         ImGui::PushID("##msgbox");
-        msgbox.Init((title + "##msgbox").c_str(), message.c_str(), buttons, false);
+        msgbox.Init("##msgbox", message.c_str(), buttons, false);
         msgbox.Open();
         int selected = msgbox.Draw();
         switch (selected) {
@@ -499,7 +496,7 @@ namespace {
         ImGui::PushID("##msgbox");
         strcpy(msgbox.Default, def.substr(0, 1023).c_str());
         strcpy(msgbox.Value, msgbox.Default);
-        msgbox.Init((title + "##msgbox").c_str(), message.c_str(), buttons, true);
+        msgbox.Init("##msgbox", message.c_str(), buttons, true);
         msgbox.Open();
         int selected = msgbox.Draw();
         switch (selected) {
@@ -525,7 +522,7 @@ namespace {
         def = remove_trailing_zeros(defnum);
         strcpy(msgbox.Default, def.substr(0, 1023).c_str());
         strcpy(msgbox.Value, msgbox.Default);
-        msgbox.Init((title + "##msgbox").c_str(), message.c_str(), buttons, true);
+        msgbox.Init("##msgbox", message.c_str(), buttons, true);
         msgbox.Open();
         int selected = msgbox.Draw();
         switch (selected) {
@@ -869,24 +866,24 @@ namespace ngs::imgui {
   }
   
   string show_message(string message) {
-    return file_dialog_helper("", "", "", ngs::fs::environment_get_variable("IMGUI_DIALOG_CAPTION"), oneButton, message);
+    return file_dialog_helper("", "", "", "", oneButton, message);
   }
 
   string show_question(string message) {
-    return file_dialog_helper("", "", "", ngs::fs::environment_get_variable("IMGUI_DIALOG_CAPTION"), twoButtons, message);
+    return file_dialog_helper("", "", "", "", twoButtons, message);
   }
 
   string show_question_ext(string message) {
-    return file_dialog_helper("", "", "", ngs::fs::environment_get_variable("IMGUI_DIALOG_CAPTION"), threeButtons, message);
+    return file_dialog_helper("", "", "", "", threeButtons, message);
   }
 
   string get_string(string message, string defstr) {
-    string result = file_dialog_helper("", "", "", ngs::fs::environment_get_variable("IMGUI_DIALOG_CAPTION"), stringInputBox, message, defstr);
+    string result = file_dialog_helper("", "", "", "", stringInputBox, message, defstr);
     return ((result.empty()) ? defstr : result);
   }
 
   double get_number(string message, double defnum) {
-    string strres = file_dialog_helper("", "", "", ngs::fs::environment_get_variable("IMGUI_DIALOG_CAPTION"), numberInputBox, message, remove_trailing_zeros(defnum));
+    string strres = file_dialog_helper("", "", "", "", numberInputBox, message, remove_trailing_zeros(defnum));
     double result = strtod(((strres.empty()) ? remove_trailing_zeros(defnum).c_str() : strres.c_str()), nullptr);
     if (result < DIGITS_MIN) result = DIGITS_MIN;
     if (result > DIGITS_MAX) result = DIGITS_MAX;
