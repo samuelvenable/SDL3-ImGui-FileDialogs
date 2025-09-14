@@ -892,7 +892,7 @@ namespace ngs::imgui {
 
   double get_number(string message, double defnum) {
     string strres = file_dialog_helper("", "", "", "", numberInputBox, message, remove_trailing_zeros(defnum));
-    bool isnumber = (!strres.empty() && (strres[0] == '-' || strres[0] == '+' || isdigit(strres[0])));
+    bool isnumber = (!strres.empty() && ((strres.length() >= 2 && (strres[0] == '-' || strres[0] == '+') && isdigit(strres[1]))|| isdigit(strres[0])));
     double result = strtod(((strres.empty() || !isnumber) ? remove_trailing_zeros(defnum).c_str() : strres.c_str()), nullptr);
     if (result < DIGITS_MIN) result = DIGITS_MIN;
     if (result > DIGITS_MAX) result = DIGITS_MAX;
