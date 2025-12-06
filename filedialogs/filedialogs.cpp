@@ -271,10 +271,12 @@ namespace {
   SDL_Renderer *renderer = nullptr;
   SDL_Surface *surf = nullptr;
   ImFontAtlas *shared_font_atlas = nullptr;
+  #if (defined(__APPLE__) && defined(__MACH__))
   bool mousedrag = false;
   float startmx = 0, startmy = 0;
   int xoffset = 0, yoffset = 0;
   int startx = 0, starty = 0;
+  #endif
 
   string file_dialog_helper(string filter, string fname, string dir, string title, int type, string message = "", string def = "") {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").empty()) {
@@ -431,6 +433,7 @@ namespace {
     while (true) {
       while (SDL_PollEvent(&e)) {
         ImGui_ImplSDL3_ProcessEvent(&e);
+        #if (defined(__APPLE__) && defined(__MACH__))
         if ((int)strtoul(ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").c_str(), nullptr, 10) != 1) {
           if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             int w = 0, h = 0;
@@ -451,6 +454,7 @@ namespace {
             mousedrag = false;
           }
         }
+        #endif
       }
       ImGui_ImplSDLRenderer3_NewFrame();
       ImGui_ImplSDL3_NewFrame();
@@ -629,7 +633,6 @@ namespace {
               childFrameHeight = childFrame.bottom - childFrame.top;
               MoveWindow(hWnd, (parentFrame.left + (parentFrameWidth / 2)) - (childFrameWidth / 2),
               (parentFrame.top + (parentFrameHeight / 2)) - (childFrameHeight / 2), childFrameWidth, childFrameHeight, true);
-              SDL_GetWindowPosition(window, &startx, &starty);
               PostMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)GetIcon((HWND)(void *)(std::uintptr_t)strtoull(
               ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10)));
             }
@@ -658,7 +661,6 @@ namespace {
             }
             if (!inside) {
               SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-              SDL_GetWindowPosition(window, &startx, &starty);
             }
           }
         }
@@ -774,10 +776,6 @@ namespace {
             SDL_HideWindow(window);
           }
         }
-      } else {
-        if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
-          SDL_GetWindowPosition(window, &startx, &starty);
-        }
       }
       #elif ((defined(__linux__) && !defined(__ANDROID__)) || (defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__) || defined(__OpenBSD__)) || defined(__sun))
       if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
@@ -809,7 +807,6 @@ namespace {
         &childFrameWidth, &childFrameHeight, &childFrameBorder, &childFrameDepth);
         XMoveWindow(display, xWnd, (parentWA.x + (parentFrameWidth / 2)) - (childFrameWidth / 2),
         (parentWA.y + (parentFrameHeight / 2)) - (childFrameHeight / 2));
-        SDL_GetWindowPosition(window, &startx, &starty);
       }
       #endif
       #if (defined(__APPLE__) && defined(__MACH__))
@@ -821,13 +818,11 @@ namespace {
       #if (defined(__APPLE__) && defined(__MACH__))
       }
       if (windowIDExists) {
-      #endif
         if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
           int x = 0, y = 0;
           SDL_GetWindowPosition(window, &x, &y);
           SDL_SetWindowPosition(window, x - xoffset, y - yoffset);
         }
-      #if (defined(__APPLE__) && defined(__MACH__))
       }
       #endif
     }
