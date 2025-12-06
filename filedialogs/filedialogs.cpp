@@ -821,9 +821,11 @@ namespace {
       #if (defined(__APPLE__) && defined(__MACH__))
       }
       #endif
-      int x = 0, y = 0;
-      SDL_GetWindowPosition(window, &x, &y);
-      SDL_SetWindowPosition(window, x - xoffset, y - yoffset);
+      if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
+        int x = 0, y = 0;
+        SDL_GetWindowPosition(window, &x, &y);
+        SDL_SetWindowPosition(window, x - xoffset, y - yoffset);
+      }
     }
     finish:
     #if defined(_WIN32)
