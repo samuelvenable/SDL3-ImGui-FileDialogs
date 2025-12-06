@@ -688,18 +688,10 @@ namespace {
               CFRelease(windowList);
             }
             if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() && !windowIDExists) {
-              [[(NSWindow *)(void *)(std::uintptr_t)strtoull(
-              ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10)
-              standardWindowButton:NSWindowCloseButton] setEnabled:NO];
-              [(NSWindow *)(void *)(std::uintptr_t)strtoull(
-              ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10)
-              addChildWindow:nsWnd ordered:NSWindowAbove];
-              NSRect parentFrame = [(NSWindow *)(void *)(std::uintptr_t)strtoull(
-              ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10) frame];
-              NSRect childFrame = [nsWnd frame]; [nsWnd setFrame:NSMakeRect(
-              (parentFrame.origin.x + (parentFrame.size.width / 2)) - (childFrame.size.width / 2),
-              (parentFrame.origin.y + (parentFrame.size.height / 2)) - (childFrame.size.height / 2),
-              childFrame.size.width, childFrame.size.height) display:YES];
+              windowID = [(NSWindow *)(void *)(std::uintptr_t)strtoull(
+              ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10) windowNumber];
+              SDL_SetWindowAlwaysOnTop(window, true);
+              windowIDExists = true;
             }
           }
         }
