@@ -774,6 +774,8 @@ namespace {
             SDL_HideWindow(window);
           }
         }
+      } else {
+        SDL_GetWindowPosition(window, &startx, &starty);
       }
       #elif ((defined(__linux__) && !defined(__ANDROID__)) || (defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__) || defined(__OpenBSD__)) || defined(__sun))
       if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
