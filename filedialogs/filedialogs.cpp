@@ -600,7 +600,8 @@ namespace {
         goto finish;
       }
       if (dialog) {
-        if (ngs::fs::environment_get_variable("IMGUI_DIALOG_WIDTH").empty() &&
+        if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1) &&
+          ngs::fs::environment_get_variable("IMGUI_DIALOG_WIDTH").empty() &&
           ngs::fs::environment_get_variable("IMGUI_DIALOG_HEIGHT").empty() &&
           (type == openFile || type == openFiles || type == saveFile || type == selectFolder)) {
           SDL_SetWindowSize(window, 720, ((int)(strtoul(ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").c_str(), nullptr, 10) == 1) ? 394 : 424));
@@ -662,6 +663,7 @@ namespace {
               }
             }
             if (!inside) {
+              if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1))
               SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
             }
           }
