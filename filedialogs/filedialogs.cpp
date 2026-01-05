@@ -288,6 +288,18 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(0));
     }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER") != std::to_string(0)) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_NOBORDER", std::to_string(1));
+    }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(0)) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_FULLSCREEN", std::to_string(1));
+    }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1)) {
+      ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
+    }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE") != std::to_string(0)) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(1));
+    }
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "direct3d12,direct3d11,direct3d,metal,vulkan,gpu,software");
     #if defined(SDL_VIDEO_DRIVER_X11)
     ngs::fs::environment_set_variable("SDL_VIDEODRIVER", "x11");
@@ -393,15 +405,6 @@ namespace {
     };
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(0)) {
       ngs::fs::environment_set_variable("IMGUI_FONT_LOADED", std::to_string(1));
-    }
-    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE") != std::to_string(0)) {
-      ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(1));
-    }
-    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER") != std::to_string(0)) {
-      ngs::fs::environment_set_variable("IMGUI_DIALOG_NOBORDER", std::to_string(1));
-    }
-    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(0)) {
-      ngs::fs::environment_set_variable("IMGUI_DIALOG_FULLSCREEN", std::to_string(1));
     }
     ImVec4 clear_color = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     string filterNew = imgui_filter(filter, (type == selectFolder));
