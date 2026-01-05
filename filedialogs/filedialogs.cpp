@@ -434,7 +434,8 @@ namespace {
       while (SDL_PollEvent(&e)) {
         ImGui_ImplSDL3_ProcessEvent(&e);
         #if (defined(__APPLE__) && defined(__MACH__))
-        if ((int)strtoul(ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").c_str(), nullptr, 10) != 1) {
+        if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1) && 
+          ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER") != std::to_string(1)) {
           if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             int w = 0, h = 0;
             SDL_GetMouseState(&startmx, &startmy);
