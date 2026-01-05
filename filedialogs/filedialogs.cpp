@@ -632,6 +632,7 @@ namespace {
               GetWindowRect(hWnd, &childFrame);
               childFrameWidth = childFrame.right - childFrame.left;
               childFrameHeight = childFrame.bottom - childFrame.top;
+              if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1))
               MoveWindow(hWnd, (parentFrame.left + (parentFrameWidth / 2)) - (childFrameWidth / 2),
               (parentFrame.top + (parentFrameHeight / 2)) - (childFrameHeight / 2), childFrameWidth, childFrameHeight, true);
               PostMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)GetIcon((HWND)(void *)(std::uintptr_t)strtoull(
@@ -750,8 +751,9 @@ namespace {
                 CGFloat parentY = windowBounds.origin.y;
                 CGFloat parentWidth = windowBounds.size.width;
                 CGFloat parentHeight = windowBounds.size.height;
-                NSRect childFrame = [nsWnd frame]; SDL_SetWindowPosition(window,
-                (parentX + (parentWidth / 2)) - (childFrame.size.width / 2), 
+                NSRect childFrame = [nsWnd frame]; 
+                if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1))
+                SDL_SetWindowPosition(window, (parentX + (parentWidth / 2)) - (childFrame.size.width / 2), 
                 (parentY + (parentHeight / 2)) - (childFrame.size.height / 2));
                 SDL_GetWindowPosition(window, &startx, &starty);
               }
@@ -798,6 +800,7 @@ namespace {
         unsigned childFrameBorder = 0, childFrameDepth = 0;
         XGetGeometry(display, xWnd, &childFrameRoot, &childFrameX, &childFrameY,
         &childFrameWidth, &childFrameHeight, &childFrameBorder, &childFrameDepth);
+        if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1))
         XMoveWindow(display, xWnd, (parentWA.x + (parentFrameWidth / 2)) - (childFrameWidth / 2),
         (parentWA.y + (parentFrameHeight / 2)) - (childFrameHeight / 2));
       }
@@ -811,7 +814,8 @@ namespace {
       #if (defined(__APPLE__) && defined(__MACH__))
       }
       if (windowIDExists) {
-        if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
+        if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1) &&
+          !ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
           int x = 0, y = 0;
           SDL_GetWindowPosition(window, &x, &y);
           SDL_SetWindowPosition(window, x - xoffset, y - yoffset);
