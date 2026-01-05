@@ -303,6 +303,7 @@ namespace {
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     dialog = window;
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1)) {
+      ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
       SDL_SetWindowFullscreenMode(window, nullptr);
       SDL_SetWindowFullscreen(window, true);
     }
