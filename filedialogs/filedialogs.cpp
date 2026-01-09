@@ -308,7 +308,6 @@ namespace {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD);
     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
     SDL_WindowFlags windowFlags = (SDL_WindowFlags)(
-    ((ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1)) ? SDL_WINDOW_FULLSCREEN : 0) |
     ((ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) ? SDL_WINDOW_ALWAYS_ON_TOP : 0) |
     SDL_WINDOW_UTILITY | SDL_WINDOW_HIDDEN | SDL_WINDOW_BORDERLESS);
     window = SDL_CreateWindow(title.c_str(), IFD_DIALOG_WIDTH, IFD_DIALOG_HEIGHT, windowFlags);
