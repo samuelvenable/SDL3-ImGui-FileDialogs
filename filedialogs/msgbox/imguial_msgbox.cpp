@@ -73,7 +73,7 @@ int ImGuiAl::MsgBox::Draw() {
     int dh = ImGui::CalcTextSize(m_Text, m_Text + strlen(m_Text), false, 100 * (0.25 * ImGui::GetFontSize())).y + (4.875f * ImGui::GetFontSize());
     dh += ((int)(strtoul(ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").c_str(), nullptr, 10) == 1) ? 0 : 30);
     if (m_Input) dh += ((4.875f * ImGui::GetFontSize()) / 2);
-    if (dialog) {
+    if (dialog && ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1)) {
       SDL_GetWindowSize(dialog, &sw, &sh);
       SDL_SetWindowSize(dialog, dw, dh);
       if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
