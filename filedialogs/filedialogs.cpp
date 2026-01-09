@@ -318,6 +318,7 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1)) {
       SDL_SetWindowFullscreenMode(window, nullptr);
       SDL_SetWindowFullscreen(window, true);
+      SDL_SyncWindow(window);
     }
     renderer = SDL_CreateRenderer(window, nullptr);
     if (renderer == nullptr) return "";
