@@ -17,7 +17,7 @@ elif [ $(uname) = "Linux" ]; then
   cmake .;
   make;
   cd ..;
-  git clone -b release-3.2.x https://github.com/libsdl-org/SDL;
+  git clone -b release-3.4.x https://github.com/libsdl-org/SDL;
   cd SDL;
   mkdir build;
   cd build;
