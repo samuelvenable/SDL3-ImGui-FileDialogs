@@ -2,7 +2,7 @@
 
 Contact me on [Discord](https://discord.com) if you have any comments, questions, or concerns, which might not belong in a GitHub issues ticket. My Discord handle is `samuelvenable`. This project is based on [ImFileDialog](https://github.com/dfranx/ImFileDialog) by [dfranx](https://github.com/dfranx), with many bugs/crashes fixed and overall improvements. The 'Quick Access' sidebar actually remembers what favorites were previously saved to it from previous runs of your application now, by saving the settings to a text file in a hidden configuration subfolder of your home folder. Allows for full localization among many other good things you'll find useful. Most of the dialog is customizable via environment variables. To create your own default list of favorites for your application, here is a minimal example:
 
-```
+```cpp
 /*
 ** Alternative main.cpp - replace "SDL3-ImGui-FileDialogs/filedialogs/main.cpp" with this exact code
 */
@@ -115,12 +115,13 @@ Supports Windows, macOS, Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, and Sun
 ![linux.png](linux.png)
 
 **Build Dependencies:**
-- Windows: Visual Studio (or MSYS2, MinGW, pacman, g++, make, pkg-config), sdl3
-- macOS: Xcode command line tools, MacPorts (for universal binaries), clang++, make, sdl3
-- Linux: posix-compliant shell at "/bin/sh", g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
+- Windows: MSYS2, MinGW, pacman, g++, make, pkg-config, sdl3
+- macOS: Xcode command line tools, MacPorts , clang++, make, sdl3
+- Linux: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - FreeBSD: clang++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - DragonFly BSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - NetBSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - OpenBSD: clang++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - SunOS: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
+
 
