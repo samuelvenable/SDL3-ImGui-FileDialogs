@@ -282,6 +282,9 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(0));
     }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED").empty()) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_EMBEDDED", std::to_string(0));
+    }
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER") != std::to_string(0)) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_NOBORDER", std::to_string(1));
     }
