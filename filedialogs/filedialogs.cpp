@@ -295,6 +295,7 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() ||
       ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT") == std::to_string(0) ||
       !IsWindow((HWND)(void *)(std::uintptr_t)strtoull(ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10))) {
+      ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
       ngs::fs::environment_set_variable("IMGUI_DIALOG_EMBEDDED", std::to_string(0));
     }
     #else
@@ -664,8 +665,9 @@ namespace {
         }
         #endif
         #if defined(_WIN32)
-        if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() &&
-        ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1))
+        if ((!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() &&
+        ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1)) ||
+        ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty())
         #endif
         SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         dialog = nullptr;
@@ -681,11 +683,10 @@ namespace {
     }
     finish:
     #if defined(_WIN32)
-    if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
-      if (ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1))
-      EnableWindow((HWND)(void *)(std::uintptr_t)strtoull(
-      ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), true);
-    }
+    if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() &&
+    ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1))
+    EnableWindow((HWND)(void *)(std::uintptr_t)strtoull(
+    ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), true);
     #elif (defined(__APPLE__) && defined(__MACH__))
     if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
       [[(NSWindow *)(void *)(std::uintptr_t)strtoull(
