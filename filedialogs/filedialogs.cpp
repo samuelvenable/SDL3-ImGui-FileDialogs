@@ -291,7 +291,13 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(0)) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_FULLSCREEN", std::to_string(1));
     }
-    #if !defined(_WIN32)
+    #if defined(_WIN32)
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() ||
+      ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT") == std::to_string(0) ||
+      !IsWindow((HWND)(void *)(std::uintptr_t)strtoull(ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10))) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_EMBEDDED", std::to_string(0));
+    }
+    #else
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1)) {
       ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
     }
