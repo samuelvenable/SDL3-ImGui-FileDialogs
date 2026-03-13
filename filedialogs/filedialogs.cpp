@@ -317,8 +317,9 @@ namespace {
     window = SDL_CreateWindow(title.c_str(), IFD_DIALOG_WIDTH, IFD_DIALOG_HEIGHT, windowFlags);
     if (window == nullptr) return "";
     #if defined(_WIN32)
-    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1) &&
-    ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1))
+    if ((ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1)) ||
+    (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() &&
+    ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1)))
     #else
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") != std::to_string(1))
     #endif
@@ -611,19 +612,10 @@ namespace {
                 SetWindowLongPtrW(hWnd, GWL_STYLE, (GetWindowLongPtrW(hWnd, GWL_STYLE) | WS_CHILDWINDOW) & ~WS_POPUP);
                 SetParent(hWnd, (HWND)(void *)(std::uintptr_t)strtoull(
                 ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10));
-                if (ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") == std::to_string(1)) {
-                  SetWindowLongPtrW((HWND)(void*)(std::uintptr_t)strtoull(
-                  ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), GWL_STYLE, 
-                  (GetWindowLongPtrW((HWND)(void*)(std::uintptr_t)strtoull(
-                  ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), GWL_STYLE) | WS_CLIPCHILDREN | WS_CLIPSIBLINGS));
-                  SetWindowLongPtrW(hWnd, GWL_STYLE, (GetWindowLongPtrW(hWnd, GWL_STYLE) | WS_CHILDWINDOW) & ~WS_POPUP);
-                  SetParent(hWnd, (HWND)(void *)(std::uintptr_t)strtoull(
-                  ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10));
-                  RECT rect; GetClientRect((HWND)(void*)(std::uintptr_t)strtoull(
-                  ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), &rect);
-                  int cw = 0, ch = 0; SDL_GetWindowSize(window, &cw, &ch);
-                  SDL_SetWindowPosition(window, (rect.right / 2) - (cw / 2), (rect.bottom / 2) - (ch / 2));
-                }
+                RECT rect; GetClientRect((HWND)(void*)(std::uintptr_t)strtoull(
+                ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), &rect);
+                int cw = 0, ch = 0; SDL_GetWindowSize(window, &cw, &ch);
+                SDL_SetWindowPosition(window, (rect.right / 2) - (cw / 2), (rect.bottom / 2) - (ch / 2));
               }
             }
           }
@@ -666,7 +658,8 @@ namespace {
         }
         #endif
         #if defined(_WIN32)
-        if (ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1))
+        if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() &&
+        ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED") != std::to_string(1))
         #endif
         SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         dialog = nullptr;
