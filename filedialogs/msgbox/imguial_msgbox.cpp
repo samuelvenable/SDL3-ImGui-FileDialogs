@@ -156,7 +156,8 @@ int ImGuiAl::MsgBox::Draw() {
         strcpy(m_Value, Value);
         init = true;
       }
-      enter_pressed = ImGui::InputTextEx("##inputBox", m_Value, Value, 1024, ImVec2(0, 0), ImGuiInputTextFlags_EnterReturnsTrue);
+      enter_pressed = ImGui::InputTextEx("##inputBox", m_Value, Value, 1024, ImVec2(0, 0), ImGuiInputTextFlags_EnterReturnsTrue | 
+      ((ngs::fs::environment_set_variable("IMGUI_DIALOG_PASSWORD") == std::to_string(1)) ? ImGuiInputTextFlags_Password : 0));
     }
     AlignForWidth(width);
     for (count = 0; count < m_Captions.size(); count++) {

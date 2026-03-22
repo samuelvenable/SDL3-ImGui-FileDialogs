@@ -305,6 +305,9 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(0));
     }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PASSWORD").empty()) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_PASSWORD", std::to_string(0));
+    }
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_EMBEDDED").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_EMBEDDED", std::to_string(0));
     }
@@ -318,11 +321,14 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() ||
       ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT") == std::to_string(0) ||
       !IsWindow((HWND)(void *)(std::uintptr_t)strtoull(ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10))) {
-      ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
+      if (ngs::fs::environment_get_variable_exists("IMGUI_DIALOG_PARENT")) ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
       ngs::fs::environment_set_variable("IMGUI_DIALOG_EMBEDDED", std::to_string(0));
     }
     #else
-    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1)) {
+    if ((ngs::fs::environment_get_variable("IMGUI_DIALOG_FULLSCREEN") == std::to_string(1) ||
+      ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty() ||
+      ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT") == std::to_string(0)) &&
+      ngs::fs::environment_get_variable_exists("IMGUI_DIALOG_PARENT")) {
       ngs::fs::environment_unset_variable("IMGUI_DIALOG_PARENT");
     }
     #endif
@@ -331,6 +337,9 @@ namespace {
     }
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_CANCELABLE") != std::to_string(0)) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_CANCELABLE", std::to_string(1));
+    }
+    if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PASSWORD") != std::to_string(0)) {
+      ngs::fs::environment_set_variable("IMGUI_DIALOG_PASSWORD", std::to_string(1));
     }
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "direct3d12,direct3d11,direct3d,metal,vulkan,gpu,software");
     #if defined(SDL_VIDEO_DRIVER_X11)
