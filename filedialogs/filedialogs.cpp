@@ -341,7 +341,11 @@ namespace {
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_PASSWORD") != std::to_string(0)) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_PASSWORD", std::to_string(1));
     }
+    #if defined(__sun)
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl,opengles,opengles2,software");
+    #else
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "direct3d12,direct3d11,direct3d,metal,vulkan,gpu,software");
+    #endif
     #if defined(SDL_VIDEO_DRIVER_X11)
     ngs::fs::environment_set_variable("SDL_VIDEODRIVER", "x11");
     #endif
