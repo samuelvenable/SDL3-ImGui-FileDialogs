@@ -118,20 +118,24 @@ Supports Windows, macOS, Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, and Sun
 - OpenBSD: clang++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - SunOS: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 
-![screenshot0.png](screenshots/screenshot0.png)
+![screenshot00.png](screenshots/screenshot00.png)
 
-![screenshot1.png](screenshots/screenshot1.png)
+![screenshot01.png](screenshots/screenshot01.png)
 
-![screenshot2.png](screenshots/screenshot2.png)
+![screenshot02.png](screenshots/screenshot02.png)
 
-![screenshot3.png](screenshots/screenshot3.png)
+![screenshot03.png](screenshots/screenshot03.png)
 
-![screenshot4.png](screenshots/screenshot4.png)
+![screenshot04.png](screenshots/screenshot04.png)
 
-![screenshot5.png](screenshots/screenshot5.png)
+![screenshot05.png](screenshots/screenshot05.png)
 
-![screenshot6.png](screenshots/screenshot6.png)
+![screenshot06.png](screenshots/screenshot06.png)
 
-![screenshot7.png](screenshots/screenshot7.png)
+![screenshot07.png](screenshots/screenshot07.png)
 
-![screenshot8.png](screenshots/screenshot8.png)
+![screenshot08.png](screenshots/screenshot08.png)
+
+![screenshot09.png](screenshots/screenshot09.png)
+
+![screenshot10.png](screenshots/screenshot10.png)
