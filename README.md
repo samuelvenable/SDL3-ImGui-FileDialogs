@@ -116,7 +116,8 @@ Supports Windows, macOS, Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, Solaris
 - DragonFly BSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - NetBSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - OpenBSD: clang++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
-- SunOS: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
+- Solaris: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
+- illumos: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 
 ![screenshot00.png](screenshots/screenshot00.png)
 
