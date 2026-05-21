@@ -106,7 +106,7 @@ int main() {
 
 # Platforms
 
-Supports Windows, macOS, Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, and SunOS.
+Supports Windows, macOS, Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, Solaris, and illumos.
 
 **Build Dependencies:**
 - Windows: MSYS2, MinGW, pacman, g++, make, pkg-config, sdl3
