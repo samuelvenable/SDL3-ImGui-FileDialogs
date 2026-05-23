@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="filedialogs\filedialogs.cpp">
+    <ClCompile Include="filedialogs\apifiledialogs\filedialogs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="filedialogs\filesystem.cpp">
+    <ClCompile Include="filedialogs\apifilesystem\filesystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="filedialogs\ImFileDialog\ImFileDialog.cpp">
@@ -50,13 +50,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="filedialogs\filedialogs.hpp">
+    <ClInclude Include="filedialogs\apifiledialogs\filedialogs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="filedialogs\filesystem.hpp">
+    <ClInclude Include="filedialogs\apifilesystem\filesystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="filedialogs\ghc\filesystem.hpp">
+    <ClInclude Include="filedialogs\apifilesystem\ghc\filesystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filedialogs\ImFileDialog\ImFileDialog.h">

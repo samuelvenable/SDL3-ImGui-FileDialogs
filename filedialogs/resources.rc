@@ -1,4 +1,4 @@
-#include "resources.h"
+#include <resources.h>
 
 IDB_EMBEDICO ICON   ".\\filedialogs.ico"
 IDB_FLICENSE RCDATA ".\\fonts\\LICENSE"

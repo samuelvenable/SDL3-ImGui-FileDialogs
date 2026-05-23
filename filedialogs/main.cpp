@@ -33,13 +33,14 @@
 #include <string>
 #include <cstdio>
 #include <windows.h>
-#include "resources.h"
-#include "filesystem.hpp"
+#include <resources.h>
 #elif defined(__APPLE__) && defined(__MACH__)
 #include <AppKit/AppKit.h>
 #endif
 
-#include "filedialogs.hpp"
+#include <apifilesystem/filesystem.hpp>
+#include <apifilesystem/ghc/filesystem.hpp>
+#include <apifiledialogs/filedialogs.hpp>
 
 #if defined(_WIN32)
 #undef main

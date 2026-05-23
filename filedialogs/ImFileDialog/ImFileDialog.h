@@ -39,9 +39,8 @@
 #define NOMINMAX
 #endif
 
-#include <filesystem.hpp>
-
-#include <ghc/filesystem.hpp>
+#include <apifilesystem/filesystem.hpp>
+#include <apifilesystem/ghc/filesystem.hpp>
 
 #define IFD_DIALOG_FILE      0
 #define IFD_DIALOG_DIRECTORY 1
