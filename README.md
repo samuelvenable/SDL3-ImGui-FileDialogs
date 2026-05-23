@@ -106,12 +106,12 @@ int main() {
 
 # Platforms
 
-Supports Windows, macOS, Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, Solaris, and illumos.
+Supports Windows, macOS, GNU/Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, Solaris, and illumos.
 
 **Build Dependencies:**
 - Windows: MSYS2, MinGW, pacman, g++, make, pkg-config, sdl3
 - macOS: Xcode command line tools, MacPorts, clang++, make, sdl3
-- Linux: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
+- GNU/Linux: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - FreeBSD: clang++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - DragonFly BSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - NetBSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
