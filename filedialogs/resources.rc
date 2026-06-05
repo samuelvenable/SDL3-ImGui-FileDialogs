@@ -1,7 +1,7 @@
 #include <resources.h>
 
 IDB_EMBEDICO ICON   ".\\filedialogs.ico"
-IDB_FLICENSE RCDATA ".\\fonts\\LICENSE"
+IDB_FLICENSE RCDATA ".\\fonts\\LICENSE.txt"
 IDB_FONTS000 RCDATA ".\\fonts\\000-notosans-regular.ttf"
 IDB_FONTS001 RCDATA ".\\fonts\\001-notokufiarabic-regular.ttf"
 IDB_FONTS002 RCDATA ".\\fonts\\002-notomusic-regular.ttf"
