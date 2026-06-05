@@ -59,7 +59,7 @@ namespace {
 
     // set imgui file dialogs window width and height; default is 720x424 pixels
     ngs::fs::environment_set_variable("IMGUI_DIALOG_WIDTH", std::to_string(720));
-    ngs::fs::environment_set_variable("IMGUI_DIALOG_HEIGHT", std::to_string(424));
+    ngs::fs::environment_set_variable("IMGUI_DIALOG_HEIGHT", std::to_string(394));
     
     // load all *.ttf and *.otf fonts of varying languages and combine them into one font from directory
     ngs::fs::environment_set_variable("IMGUI_FONT_PATH", ngs::fs::executable_get_directory() + "fonts");
