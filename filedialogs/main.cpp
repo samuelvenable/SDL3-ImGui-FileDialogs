@@ -235,7 +235,7 @@ namespace {
 }
 #endif
 
-using namespace ngs::imgui;
+using namespace ngs::im;
 
 static std::string remove_trailing_zeros(double numb) {
   std::string strnumb = std::to_string(numb);
