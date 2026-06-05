@@ -211,7 +211,7 @@ namespace {
     "fonts\\155-notosanskr-regular.otf",
     "fonts\\156-notosanssc-regular.otf",
     "fonts\\157-notosanshk-regular.otf",
-    "fonts\\LICENSE"
+    "fonts\\LICENSE.txt"
   };
   
   void resources_init() {
