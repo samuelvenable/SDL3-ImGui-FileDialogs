@@ -383,12 +383,40 @@ namespace {
     if (rendererName) {
       //printf("Renderer: %s\n", rendererName);
     }
+    static string ini;
     IMGUI_CHECKVERSION();
     if (!shared_font_atlas)
       shared_font_atlas = new ImFontAtlas();
     ImGui::CreateContext(shared_font_atlas);
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.IniFilename = nullptr;
+    #if defined(_WIN32)
+    if (ngs::fs::environment_get_variable("IMGUI_CONFIG_HOME").empty())
+      ngs::fs::environment_set_variable("IMGUI_CONFIG_HOME", ngs::fs::environment_get_variable("USERPROFILE"));
+    #else
+    if (ngs::fs::environment_get_variable("IMGUI_CONFIG_HOME").empty())
+      ngs::fs::environment_set_variable("IMGUI_CONFIG_HOME", ngs::fs::environment_get_variable("HOME"));
+    #endif
+    if (ngs::fs::environment_get_variable("IMGUI_CONFIG_FOLDER").empty())
+      ngs::fs::environment_set_variable("IMGUI_CONFIG_FOLDER", "filedialogs");
+    if (ngs::fs::environment_get_variable("IMGUI_CONFIG_FILE").empty())
+      ngs::fs::environment_set_variable("IMGUI_CONFIG_FILE", "filedialogs.txt");
+    if (ngs::fs::environment_get_variable("IMGUI_CONFIG_INI").empty())
+      ngs::fs::environment_set_variable("IMGUI_CONFIG_INI", "filedialogs.ini");
+    #if defined(_WIN32)
+    string config_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}");
+    if (!config_path.empty()) {
+      if (!ngs::fs::directory_exists(config_path)) ngs::fs::directory_create(config_path);
+      ini = ngs::fs::environment_expand_variables(config_path + "\\${IMGUI_CONFIG_INI}");
+      int attr = GetFileAttributesW(ghc::filesystem::path(config_path).wstring().c_str());
+      if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0) SetFileAttributesW(ghc::filesystem::path(config_path).wstring().c_str(), attr | FILE_ATTRIBUTE_HIDDEN);
+    }
+    #else
+    string config_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}");
+    if (!config_path.empty()) {
+      if (!ngs::fs::directory_exists(config_path)) ngs::fs::directory_create(config_path);
+      ini = ngs::fs::environment_expand_variables(config_path + "/${IMGUI_CONFIG_INI}");
+    }
+    #endif
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
       ngs::im::ifd_load_fonts();
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
