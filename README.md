@@ -66,7 +66,7 @@ namespace {
     ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20)); // font size for dialogbox
 
     // setup imgui file dialog favorites config file absolute pathname
-    ngs::fs::environment_set_variable("IMGUI_CONFIG_HOME", HOME_PATH);
+    ngs::fs::environment_set_variable("IMGUI_CONFIG_HOME", ngs::fs::environment_get_variable(HOME_PATH));
     ngs::fs::environment_set_variable("IMGUI_CONFIG_FOLDER", "imfiledialogs");
     ngs::fs::environment_set_variable("IMGUI_CONFIG_FILE", "fdfavorites.txt");
     
