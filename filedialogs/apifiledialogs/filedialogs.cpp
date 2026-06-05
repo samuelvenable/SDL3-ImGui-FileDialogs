@@ -390,7 +390,7 @@ namespace {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.IniFilename = nullptr;
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
-      ngs::imgui::ifd_load_fonts();
+      ngs::im::ifd_load_fonts();
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
       ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
       ImFontConfig config;
@@ -746,7 +746,7 @@ namespace {
 
 } // anonymous namespace
 
-namespace ngs::imgui {
+namespace ngs::im {
 
   void ifd_load_fonts() {
     if (!fonts.empty()) fonts.clear();
@@ -840,84 +840,84 @@ namespace ngs::imgui {
     return result;
   }
 
-} // namespace ngs::imgui
+} // namespace ngs::im
 
 void ifd_load_fonts() {
-  ngs::imgui::ifd_load_fonts();
+  ngs::im::ifd_load_fonts();
 }
 
 char *get_open_filename(char *filter, char *fname) {
   static string result;
-  result = ngs::imgui::get_open_filename(filter, fname);
+  result = ngs::im::get_open_filename(filter, fname);
   return (char *)result.c_str();
 }
 
 char *get_open_filename_ext(char *filter, char *fname, char *dir, char *title) {
   static string result;
-  result = ngs::imgui::get_open_filename_ext(filter, fname, dir, title);
+  result = ngs::im::get_open_filename_ext(filter, fname, dir, title);
   return (char *)result.c_str();
 }
 
 char *get_open_filenames(char *filter, char *fname) {
   static string result;
-  result = ngs::imgui::get_open_filenames(filter, fname);
+  result = ngs::im::get_open_filenames(filter, fname);
   return (char *)result.c_str();
 }
 
 char *get_open_filenames_ext(char *filter, char *fname, char *dir, char *title) {
   static string result;
-  result = ngs::imgui::get_open_filenames_ext(filter, fname, dir, title);
+  result = ngs::im::get_open_filenames_ext(filter, fname, dir, title);
   return (char *)result.c_str();
 }
 
 char *get_save_filename(char *filter, char *fname) {
   static string result;
-  result = ngs::imgui::get_save_filename(filter, fname);
+  result = ngs::im::get_save_filename(filter, fname);
   return (char *)result.c_str();
 }
 
 char *get_save_filename_ext(char *filter, char *fname, char *dir, char *title) {
   static string result;
-  result = ngs::imgui::get_save_filename_ext(filter, fname, dir, title);
+  result = ngs::im::get_save_filename_ext(filter, fname, dir, title);
   return (char *)result.c_str();
 }
 
 char *get_directory(char *dname) {
   static string result;
-  result = ngs::imgui::get_directory(dname);
+  result = ngs::im::get_directory(dname);
   return (char *)result.c_str();
 }
 
 char *get_directory_alt(char *capt, char *root) {
   static string result;
-  result = ngs::imgui::get_directory_alt(capt, root);
+  result = ngs::im::get_directory_alt(capt, root);
   return (char *)result.c_str();
 }
 
 char *show_message(char *message) {
   static string result;
-  result = ngs::imgui::show_message(message);
+  result = ngs::im::show_message(message);
   return (char *)result.c_str();
 }
 
 char *show_question(char *message) {
   static string result;
-  result = ngs::imgui::show_question(message);
+  result = ngs::im::show_question(message);
   return (char *)result.c_str();
 }
 
 char *show_question_ext(char *message) {
   static string result;
-  result = ngs::imgui::show_question_ext(message);
+  result = ngs::im::show_question_ext(message);
   return (char *)result.c_str();
 }
 
 char *get_string(char *message, char *defstr) {
   static string result;
-  result = ngs::imgui::get_string(message, defstr);
+  result = ngs::im::get_string(message, defstr);
   return (char *)result.c_str();
 }
 
 double get_number(char *message, double defnum) {
-  return ngs::imgui::get_number(message, defnum);
+  return ngs::im::get_number(message, defnum);
 }
