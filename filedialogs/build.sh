@@ -1,5 +1,5 @@
 #!/bin/sh
-cd "${0%/*}"
+cd "${0%/*}";
 
 # build command line executable
 if [ `uname -o` = "Msys" ]; then
