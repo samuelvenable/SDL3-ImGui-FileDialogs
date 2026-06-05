@@ -57,7 +57,7 @@ namespace {
     }
     #endif
 
-    // set imgui file dialogs window width and height; default is 720x424 pixels
+    // set imgui file dialogs window width and height; default is 720x394 pixels
     ngs::fs::environment_set_variable("IMGUI_DIALOG_WIDTH", std::to_string(720));
     ngs::fs::environment_set_variable("IMGUI_DIALOG_HEIGHT", std::to_string(394));
     
