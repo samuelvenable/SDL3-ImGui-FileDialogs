@@ -71,7 +71,7 @@ elif [ `uname` = "SunOS" ]; then
 fi;
 
 # build shared library
-if [ $(uname -o) = "Msys" ]; then
+if [ `uname -o` = "Msys" ]; then
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.dll" -std=c++17 -shared -I. -D_UNICODE -DUNICODE -DIMGUI_USE_WCHAR32 -static-libgcc -static-libstdc++ -static `pkg-config --cflags --libs sdl3 --static` -lshell32 -fPIC;
 elif [ `uname` = "Darwin" ]; then
   clang++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.dylib" -std=c++17 -shared -Wno-format-security -I. -DIMGUI_USE_WCHAR32 -I/opt/local/include -L/opt/local/lib -lSDL3 -ObjC++ -liconv -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-weak_framework,CoreHaptics -Wl,-weak_framework,GameController -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal -fPIC -arch arm64 -arch x86_64 -fPIC;
@@ -79,7 +79,7 @@ elif [ `uname` = "Darwin" ]; then
   install_name_tool -id @loader_path/libSDL3.dylib ./libSDL3.dylib
   install_name_tool -change /opt/local/lib/libSDL3.0.dylib @loader_path/libSDL3.dylib ./libfiledialogs.dylib
   install_name_tool -change /opt/local/lib/libiconv.2.dylib /usr/lib/libiconv.2.dylib ./libfiledialogs.dylib
-elif [ $(uname -o) = "GNU/Linux" ]; then
+elif [ `uname -o` = "GNU/Linux" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
