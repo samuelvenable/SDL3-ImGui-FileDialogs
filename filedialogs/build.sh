@@ -2,7 +2,7 @@
 cd "${0%/*}"
 
 # build command line executable
-if [ $(uname -o) = "Msys" ]; then
+if [ `uname -o` = "Msys" ]; then
   windres "resources.rc" -o "resources.o" -I.;
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" "main.cpp" "resources.o" -o "filedialogs.exe" -std=c++17 -I. -D_UNICODE -DUNICODE -DIMGUI_USE_WCHAR32 -static-libgcc -static-libstdc++ -static `pkg-config --cflags --libs sdl3 --static` -lshell32 -mconsole -fPIC;
   rm -f "resources.o";
@@ -15,7 +15,7 @@ elif [ `uname` = "Darwin" ]; then
   install_name_tool -change /opt/local/lib/libiconv.2.dylib /usr/lib/libiconv.2.dylib ./filedialogs
   cp -fr "./filedialogs" "../filedialogs.app/Contents/MacOS/filedialogs";
   cp -fr "./libSDL3.dylib" "../filedialogs.app/Contents/MacOS/libSDL3.dylib"
-elif [ $(uname -o) = "GNU/Linux" ]; then
+elif [ `uname -o` = "GNU/Linux" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
@@ -32,35 +32,35 @@ elif [ $(uname -o) = "GNU/Linux" ]; then
   ln -s "/usr/local/lib/libSDL3.so" "./libSDL3.so"
   ln -s "/usr/local/lib/libSDL3.so.0" "./libSDL3.so.0"
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" "main.cpp" -o "filedialogs" -std=c++17 -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -static-libgcc -static-libstdc++ `pkg-config --cflags sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lpthread -no-pie -Wl,--rpath="\$ORIGIN" -lSDL3 -fPIC;
-elif [ $(uname) = "FreeBSD" ]; then
+elif [ `uname` = "FreeBSD" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   clang++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" "main.cpp" -o "filedialogs" -std=c++17 -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lpthread -fPIC;
-elif [ $(uname) = "DragonFly" ]; then
+elif [ `uname` = "DragonFly" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" "main.cpp" -o "filedialogs" -std=c++17 -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -static-libgcc -static-libstdc++ `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lpthread -fPIC;
-elif [ $(uname) = "NetBSD" ]; then
+elif [ `uname` = "NetBSD" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" "main.cpp" -o "filedialogs" -std=c++17 -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -static-libgcc -static-libstdc++ `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lpthread -fPIC;
-elif [ $(uname) = "OpenBSD" ]; then
+elif [ `uname` = "OpenBSD" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   clang++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" "main.cpp" -o "filedialogs" -std=c++17 -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -I/usr/local/include `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lkvm -lpthread -fPIC;
-elif [ $(uname) = "SunOS" ]; then
+elif [ `uname` = "SunOS" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
@@ -86,35 +86,35 @@ elif [ $(uname -o) = "GNU/Linux" ]; then
   make;
   cd ..;
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.so" -std=c++17 -shared -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -static-libgcc -static-libstdc++ `pkg-config --cflags sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lpthread -Wl,--rpath="\$ORIGIN" -lSDL3 -fPIC;
-elif [ $(uname) = "FreeBSD" ]; then
+elif [ `uname` = "FreeBSD" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   clang++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.so" -std=c++17 -shared -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lpthread -fPIC;
-elif [ $(uname) = "DragonFly" ]; then
+elif [ `uname` = "DragonFly" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.so" -std=c++17 -shared -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -static-libgcc `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lpthread -fPIC;
-elif [ $(uname) = "NetBSD" ]; then
+elif [ `uname` = "NetBSD" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   g++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.so" -std=c++17 -shared -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -static-libgcc `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lpthread -fPIC;
-elif [ $(uname) = "OpenBSD" ]; then
+elif [ `uname` = "OpenBSD" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
   make;
   cd ..;
   clang++ "ImFileDialog/ImFileDialog.cpp" "imgui/imgui.cpp" "imgui/imgui_impl_sdl3.cpp" "imgui/imgui_impl_sdlgpu3.cpp" "imgui/imgui_impl_sdlrenderer3.cpp" "imgui/imgui_draw.cpp" "imgui/imgui_tables.cpp" "imgui/imgui_widgets.cpp" "apifilesystem/filesystem.cpp" "apifiledialogs/filedialogs.cpp" "msgbox/imguial_msgbox.cpp" -o "libfiledialogs.so" -std=c++17 -shared -Wno-format-security -I. -Ilunasvg/include "lunasvg/liblunasvg.a" "lunasvg/plutovg/libplutovg.a" -DIMGUI_USE_WCHAR32 -I/usr/local/include `pkg-config --cflags --libs sdl3` `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gio-2.0` `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs x11` -lc -lkvm -lpthread -fPIC;
-elif [ $(uname) = "SunOS" ]; then
+elif [ `uname` = "SunOS" ]; then
   cd "lunasvg";
   rm -f "CMakeCache.txt";
   cmake .;
