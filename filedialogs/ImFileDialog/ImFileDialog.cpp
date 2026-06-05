@@ -3,7 +3,7 @@
  MIT License
 
  Copyright © 2021 dfranx
- Copyright © 2021-2025 Samuel Venable
+ Copyright © 2021-2026 Samuel Venable
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -705,9 +705,9 @@ namespace ifd {
   void FileDialog::Close() {
     std::error_code ec;
     #if defined(_WIN32)
-    int fd = ngs::fs::file_text_open_write("${USERPROFILE}\\.config\\${IMGUI_CONFIG_FOLDER}\\${IMGUI_CONFIG_FILE}");
+    int fd = ngs::fs::file_text_open_write("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\${IMGUI_CONFIG_FILE}");
     #else
-    int fd = ngs::fs::file_text_open_write("${HOME}/.config/${IMGUI_CONFIG_FOLDER}/${IMGUI_CONFIG_FILE}");
+    int fd = ngs::fs::file_text_open_write("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/${IMGUI_CONFIG_FILE}");
     #endif
     if (fd != -1) {
       for (auto& p : m_treeCache) {
@@ -720,6 +720,15 @@ namespace ifd {
           }
         }
       }
+      ngs::fs::file_text_close(fd);
+    }
+    #if defined(_WIN32)
+    int fd = ngs::fs::file_text_open_write("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\${IMGUI_CONFIG_ZOOM}");
+    #else
+    int fd = ngs::fs::file_text_open_write("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/${IMGUI_CONFIG_ZOOM}");
+    #endif
+    if (fd != -1) {
+      ngs::fs::file_text_write_string(fd, std::to_string(m_zoom));
       ngs::fs::file_text_close(fd);
     }
   
