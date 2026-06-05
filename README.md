@@ -98,7 +98,7 @@ namespace {
 
 int main() {
   init(); // setup all initialization related settings
-  std::cout << ngs::imgui::get_open_filename("Portable Network Graphics (*.png)|*.png|" +
+  std::cout << ngs::im::get_open_filename("Portable Network Graphics (*.png)|*.png|" +
   std::string("Graphics Interchange Format (*.gif)|*.gif"), "Untitled.png") << std::endl;
   return 0;
 }
