@@ -55,7 +55,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #endif
 
+#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#endif
+
 #include <stb/stb_image.h>
+#include <stb/stb_image_write.h>
 
 #if (((defined(__linux__) && !defined(__ANDROID__)) || (defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__) || defined(__OpenBSD__)) || defined(__sun)) && !defined(IFD_USE_BASIC_ICONS))
 #include <lunasvg.h>
@@ -539,6 +544,12 @@ namespace ifd {
         ngs::fs::file_text_close(fd);
       }
     }
+    stbi_write_png((configPath.string() + "\\file_icon.png").c_str(), 32, 32, 4, (const void *)&file_icon[0], 32 * 4);
+    stbi_write_png((configPath.string() + "\\folder_icon.png").c_str(), 32, 32, 4, (const void *)&folder_icon[0], 32 * 4);
+    if (ngs::fs::environment_get_variable("IMGUI_FILE_ICON").empty())
+      ngs::fs::environment_set_variable("IMGUI_FILE_ICON", configPath.string() + "\\file_icon.png");
+    if (ngs::fs::environment_get_variable("IMGUI_FOLDER_ICON").empty())
+      ngs::fs::environment_set_variable("IMGUI_FOLDER_ICON", configPath.string() + "\\folder_icon.png");
 
     // This PC
     FileTreeNode *thisPC = new FileTreeNode(IFD_THIS_PC);
@@ -600,6 +611,12 @@ namespace ifd {
         ngs::fs::file_text_close(fd);
       }
     }
+    stbi_write_png((configPath.string() + "/file_icon.png").c_str(), 32, 32, 4, (const void *)&file_icon[0], 32 * 4);
+    stbi_write_png((configPath.string() + "/folder_icon.png").c_str(), 32, 32, 4, (const void *)&folder_icon[0], 32 * 4);
+    if (ngs::fs::environment_get_variable("IMGUI_FILE_ICON").empty())
+      ngs::fs::environment_set_variable("IMGUI_FILE_ICON", configPath.string() + "/file_icon.png");
+    if (ngs::fs::environment_get_variable("IMGUI_FOLDER_ICON").empty())
+      ngs::fs::environment_set_variable("IMGUI_FOLDER_ICON", configPath.string() + "/folder_icon.png");
 
     // This PC
     FileTreeNode *thisPC = new FileTreeNode(IFD_THIS_PC);
@@ -1334,17 +1351,10 @@ namespace ifd {
               for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                   int index = (y * width + x) * 4;
-                  #if !defined(IFD_USE_OPENGL)
                   invData[index + 0] = image[index + 0];
                   invData[index + 1] = image[index + 1];
                   invData[index + 2] = image[index + 2];
                   invData[index + 3] = image[index + 3];
-                  #else
-                  invData[index + 2] = image[index + 0];
-                  invData[index + 1] = image[index + 1];
-                  invData[index + 0] = image[index + 2];
-                  invData[index + 3] = image[index + 3];
-                  #endif
                 }
               }
               free(image);
@@ -1366,17 +1376,10 @@ namespace ifd {
               for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                   int index = (y * width + x) * 4;
-                  #if !defined(IFD_USE_OPENGL)
                   invData[index + 0] = image[index + 0];
                   invData[index + 1] = image[index + 1];
                   invData[index + 2] = image[index + 2];
                   invData[index + 3] = image[index + 3];
-                  #else
-                  invData[index + 2] = image[index + 0];
-                  invData[index + 1] = image[index + 1];
-                  invData[index + 0] = image[index + 2];
-                  invData[index + 3] = image[index + 3];
-                  #endif
                 }
               }
               free(image);
@@ -1400,16 +1403,17 @@ namespace ifd {
         int origY = y / 16;
         int index = (origY * w + origX) * 4;
         int scaledIndex = (y * sw + x) * 4;
-        if (image) {
-          sd[scaledIndex + 0] = data[index + 0];
-          sd[scaledIndex + 1] = data[index + 1];
-          sd[scaledIndex + 2] = data[index + 2];          
-        } else {
-          sd[scaledIndex + 0] = 127 - data[index + 0];
-          sd[scaledIndex + 1] = 127 - data[index + 1];
-          sd[scaledIndex + 2] = 127 - data[index + 2];
-        }
+        #if !defined(IFD_USE_OPENGL)
+        sd[scaledIndex + 0] = data[index + 0];
+        sd[scaledIndex + 1] = data[index + 1];
+        sd[scaledIndex + 2] = data[index + 2];          
         sd[scaledIndex + 3] = data[index + 3];
+        #else
+        sd[scaledIndex + 2] = data[index + 0];
+        sd[scaledIndex + 1] = data[index + 1];
+        sd[scaledIndex + 0] = data[index + 2];          
+        sd[scaledIndex + 3] = data[index + 3];
+        #endif
       }
     }
     free(image);
