@@ -89,6 +89,9 @@
     <ClInclude Include="filedialogs\stb\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="filedialogs\stb\stb_image_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="filedialogs\SDL3\include\SDL3\begin_code.h">
       <Filter>Header Files</Filter>
     </ClInclude>
