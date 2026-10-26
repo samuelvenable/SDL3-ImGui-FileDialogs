@@ -1334,7 +1334,7 @@ namespace ifd {
               for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                   int index = (y * width + x) * 4;
-                  #if defined(IFD_USE_OPENGL)
+                  #if !defined(IFD_USE_OPENGL)
                   invData[index + 0] = image[index + 0];
                   invData[index + 1] = image[index + 1];
                   invData[index + 2] = image[index + 2];
@@ -1366,7 +1366,7 @@ namespace ifd {
               for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                   int index = (y * width + x) * 4;
-                  #if defined(IFD_USE_OPENGL)
+                  #if !defined(IFD_USE_OPENGL)
                   invData[index + 0] = image[index + 0];
                   invData[index + 1] = image[index + 1];
                   invData[index + 2] = image[index + 2];
@@ -1400,9 +1400,15 @@ namespace ifd {
         int origY = y / 16;
         int index = (origY * w + origX) * 4;
         int scaledIndex = (y * sw + x) * 4;
-        sd[scaledIndex + 0] = 127 - data[index + 0];
-        sd[scaledIndex + 1] = 127 - data[index + 1];
-        sd[scaledIndex + 2] = 127 - data[index + 2];
+        if (image) {
+          sd[scaledIndex + 0] = data[index + 0];
+          sd[scaledIndex + 1] = data[index + 1];
+          sd[scaledIndex + 2] = data[index + 2];          
+        } else {
+          sd[scaledIndex + 0] = 127 - data[index + 0];
+          sd[scaledIndex + 1] = 127 - data[index + 1];
+          sd[scaledIndex + 2] = 127 - data[index + 2];
+        }
         sd[scaledIndex + 3] = data[index + 3];
       }
     }
