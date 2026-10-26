@@ -1319,8 +1319,76 @@ namespace ifd {
     }
     m_iconIndices.push_back(iconID);
     m_iconFilepaths.push_back(pathU8);
-    uint8_t *data = (uint8_t *)ifd::GetDefaultFileIcon();
+    uint8_t *data = nullptr;
+    unsigned char *image = nullptr;
+    if (iconID == 0) {
+      ghc::filesystem::path folder_icon_path = ngs::fs::environment_get_variable("IMGUI_FOLDER_ICON");
+      if (!folder_icon_path.string().empty() && folder_icon_path.has_extension()) {
+        std::string ext = folder_icon_path.extension().string();
+        if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".tga") {
+          int width, height, nrChannels;
+          image = stbi_load(folder_icon_path.string().c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
+          if (image) {
+            unsigned char *invData = (unsigned char *)calloc(height * width * 4, sizeof(unsigned char));
+            if (invData) {
+              for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                  int index = (y * width + x) * 4;
+                  #if defined(IFD_USE_OPENGL)
+                  invData[index + 0] = image[index + 0];
+                  invData[index + 1] = image[index + 1];
+                  invData[index + 2] = image[index + 2];
+                  invData[index + 3] = image[index + 3];
+                  #else
+                  invData[index + 2] = image[index + 0];
+                  invData[index + 1] = image[index + 1];
+                  invData[index + 0] = image[index + 2];
+                  invData[index + 3] = image[index + 3];
+                  #endif
+                }
+              }
+              free(image);
+              image = invData;
+            }
+          }
+        }
+      }
+    } else {
+      ghc::filesystem::path file_icon_path = ngs::fs::environment_get_variable("IMGUI_FILE_ICON");
+      if (!file_icon_path.string().empty() && file_icon_path.has_extension()) {
+        std::string ext = file_icon_path.extension().string();
+        if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".tga") {
+          int width, height, nrChannels;
+          image = stbi_load(file_icon_path.string().c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
+          if (image) {
+            unsigned char *invData = (unsigned char *)calloc(height * width * 4, sizeof(unsigned char));
+            if (invData) {
+              for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                  int index = (y * width + x) * 4;
+                  #if defined(IFD_USE_OPENGL)
+                  invData[index + 0] = image[index + 0];
+                  invData[index + 1] = image[index + 1];
+                  invData[index + 2] = image[index + 2];
+                  invData[index + 3] = image[index + 3];
+                  #else
+                  invData[index + 2] = image[index + 0];
+                  invData[index + 1] = image[index + 1];
+                  invData[index + 0] = image[index + 2];
+                  invData[index + 3] = image[index + 3];
+                  #endif
+                }
+              }
+              free(image);
+              image = invData;
+            }
+          }
+        }
+      }
+    }
+    data = (uint8_t *)ifd::GetDefaultFileIcon();
     if (iconID == 0) data = (uint8_t *)ifd::GetDefaultFolderIcon();
+    if (image) data = (uint8_t *)image;
     int w = 32;
     int h = 32;
     int sw = w * 16;
@@ -1338,6 +1406,7 @@ namespace ifd {
         sd[scaledIndex + 3] = data[index + 3];
       }
     }
+    free(image);
     m_icons[pathU8] = this->CreateTexture(sd, sw, sh, 0);
     free(sd);
     return m_icons[pathU8];
