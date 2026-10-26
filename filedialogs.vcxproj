@@ -142,6 +142,7 @@
     <ClInclude Include="filedialogs\SDL3\include\SDL3\SDL_video.h" />
     <ClInclude Include="filedialogs\SDL3\include\SDL3\SDL_vulkan.h" />
     <ClInclude Include="filedialogs\stb\stb_image.h" />
+    <ClInclude Include="filedialogs\stb\stb_image_write.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="filedialogs\filedialogs.ico" />
