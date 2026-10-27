@@ -58,7 +58,7 @@ static std::string remove_trailing_zeros(double numb) {
 }
 
 int main(int argc, const char **argv) {
-  ngs::fs::set_working_directory(ngs::fs::executable_get_directory());
+  ngs::fs::directory_set_current_working(ngs::fs::executable_get_directory());
   #if defined(_WIN32)
   SetConsoleOutputCP(CP_UTF8);
   if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty() && 
