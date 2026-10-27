@@ -43,37 +43,22 @@ if(IFD_USE_LIBRARY_BUILD)
 	add_library(filedialogs ${SOURCES})
 else()
 	if(WIN32)
-		set(SOURCES
-			source/main.cpp
-			source/resource.rc
-			source/apifiledialogs/filedialogs.cpp
-			source/apifilesystem/filesystem.cpp
-			source/ImFileDialog/ImFileDialog.cpp
-			source/imgui/imgui.cpp
-			source/imgui/imgui_demo.cpp
-			source/imgui/imgui_draw.cpp
-			source/imgui/imgui_impl_sdl3.cpp
-			source/imgui/imgui_impl_sdlrenderer3.cpp
-			source/imgui/imgui_tables.cpp
-			source/imgui/imgui_widgets.cpp
-			source/msgbox/imguial_msgbox.cpp
-		)
-	else()
-		set(SOURCES
-			source/main.cpp
-			source/apifiledialogs/filedialogs.cpp
-			source/apifilesystem/filesystem.cpp
-			source/ImFileDialog/ImFileDialog.cpp
-			source/imgui/imgui.cpp
-			source/imgui/imgui_demo.cpp
-			source/imgui/imgui_draw.cpp
-			source/imgui/imgui_impl_sdl3.cpp
-			source/imgui/imgui_impl_sdlrenderer3.cpp
-			source/imgui/imgui_tables.cpp
-			source/imgui/imgui_widgets.cpp
-			source/msgbox/imguial_msgbox.cpp
-		)
+		target_sources(filedialogs PRIVATE source/resource.rc)
 	endif()
+	set(SOURCES
+		source/main.cpp
+		source/apifiledialogs/filedialogs.cpp
+		source/apifilesystem/filesystem.cpp
+		source/ImFileDialog/ImFileDialog.cpp
+		source/imgui/imgui.cpp
+		source/imgui/imgui_demo.cpp
+		source/imgui/imgui_draw.cpp
+		source/imgui/imgui_impl_sdl3.cpp
+		source/imgui/imgui_impl_sdlrenderer3.cpp
+		source/imgui/imgui_tables.cpp
+		source/imgui/imgui_widgets.cpp
+		source/msgbox/imguial_msgbox.cpp
+	)
 	add_executable(filedialogs ${SOURCES})
 endif()
 cl_add_dep(filedialogs SDL3)
