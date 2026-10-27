@@ -42,9 +42,6 @@ if(IFD_USE_LIBRARY_BUILD)
 	)
 	add_library(filedialogs ${SOURCES})
 else()
-	if(WIN32)
-		target_sources(filedialogs PRIVATE source/resource.rc)
-	endif()
 	set(SOURCES
 		source/main.cpp
 		source/apifiledialogs/filedialogs.cpp
@@ -60,6 +57,9 @@ else()
 		source/msgbox/imguial_msgbox.cpp
 	)
 	add_executable(filedialogs ${SOURCES})
+endif()
+if(WIN32)
+	target_sources(filedialogs PRIVATE source/resource.rc)
 endif()
 cl_add_dep(filedialogs SDL3)
 set_target_properties(filedialogs PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
