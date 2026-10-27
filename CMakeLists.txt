@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 project(filedialogs)
+set(SDL_X11_XSCRNSAVER OFF)
 find_package(PkgConfig REQUIRED)
 if(IFD_USE_BASIC_ICONS)
 	add_compile_definitions(IFD_USE_BASIC_ICONS)
