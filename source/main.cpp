@@ -33,7 +33,6 @@
 #include <string>
 #include <cstdio>
 #include <windows.h>
-#include <resources.h>
 #elif defined(__APPLE__) && defined(__MACH__)
 #include <AppKit/AppKit.h>
 #endif
