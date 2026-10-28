@@ -110,7 +110,7 @@ Supports Windows, macOS, GNU/Linux, FreeBSD, DragonFly BSD, NetBSD, OpenBSD, Sol
 
 **Build Dependencies:**
 - Windows: {{visual studio, msvc} or {msys2, mingw, g++, ninja}}, sdl3, cmake
-- macOS: Xcode command line tools, {optional: brew}, clang++, make, sdl3, cmake
+- macOS: xcode command line tools, {optional: brew}, clang++, make, sdl3, cmake
 - GNU/Linux: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - FreeBSD: clang++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
 - DragonFly BSD: g++, make, sdl3, x11, gtk+3.0, gio2.0, glib2.0, pkg-config, cmake
