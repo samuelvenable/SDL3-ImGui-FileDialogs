@@ -133,7 +133,7 @@ Ubuntu:
 
 ![linux.png](screenshots/linux.png)
 
-# Additional Notes
+# Notes
 
 - The OS-default icon theme is used when `-DIFD_USE_BASIC_ICONS=ON` is not passed to CMake, (which may add dependencies).
 - To use custom 32x32 pixel *.png icons for files and folders in the file dialogs, pass `-DIFD_USE_BASIC_ICONS=ON` to CMake.
