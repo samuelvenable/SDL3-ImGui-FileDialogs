@@ -4,7 +4,7 @@ Contact me on [Discord](https://discord.com) if you have any comments, questions
 
 ```cpp
 /*
-** Alternative main.cpp - replace "SDL3-ImGui-FileDialogs/filedialogs/main.cpp" with this exact code
+** Alternative main.cpp - replace "SDL3-ImGui-FileDialogs/source/main.cpp" with this exact code
 */
 
 #include <iostream> // std::cout, std::endl
@@ -132,3 +132,11 @@ Macintosh:
 Ubuntu:
 
 ![linux.png](screenshots/linux.png)
+
+# Additional Notes
+
+- The OS-default icon theme is used when `-DIFD_USE_BASIC_ICONS=ON` is not passed to CMake, (which may add dependencies).
+- To use custom 32x32 pixel *.png icons for files and folders in the file dialogs, pass `-DIFD_USE_BASIC_ICONS=ON` to CMake.
+- Change the `IMGUI_FILE_ICON` and `IMGUI_FOLDER_ICON` environment variables to the path of the 32x32 *.png icons.
+- When `IMGUI_FILE_ICON` and `IMGUI_FOLDER_ICON` are not set baked-in icons for files and folders are used instead.
+- To build this project as the Client Library instead of the CLI, pass `-DIFD_USE_LIBRARY_BUILD=ON` to CMake.
