@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 project(filedialogs)
+set(CATALOG_FORCE_source_SDL3 TRUE)
 if(UNIX AND NOT APPLE)
 	set(SDL_X11_XSCRNSAVER OFF)
 	set(SDL_X11_XINPUT OFF)
