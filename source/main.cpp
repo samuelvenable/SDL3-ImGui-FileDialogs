@@ -66,15 +66,6 @@ int main(int argc, const char **argv) {
     [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
   }
   #endif
-  #if defined(_WIN32)
-  std::string fonts_path = "${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts"
-  #else
-  std::string fonts_path = "${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts";
-  #endif
-  fonts_path = ngs::fs::environment_expand_variables(fonts_path);
-  if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty()) {
-    ngs::fs::environment_set_variable("IMGUI_FONT_PATH", fonts_path);
-  }
   if (argc <= 2) {
     if (argc == 1 || (argc == 2 && strcmp(argv[1], "--help") == 0)) {
       std::cout << "usage: filedialogs [options]                       " << "\n";
