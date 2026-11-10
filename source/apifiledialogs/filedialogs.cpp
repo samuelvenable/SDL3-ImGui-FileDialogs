@@ -208,6 +208,7 @@ namespace {
     parent_path = ngs::fs::environment_expand_variables(parent_path);
     ghc::filesystem::create_directories(parent_path, ec);
     for (const auto &path : romfs::list()) {
+      auto file = romfs::get(path);
       #if defined(_WIN32)
       wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
       std::wofstream out_file(out_path);
