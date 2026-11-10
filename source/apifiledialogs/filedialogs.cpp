@@ -454,14 +454,14 @@ namespace {
         for (unsigned i = 0; i < fonts.size(); i++) {
           message_pump();
           if (ngs::fs::file_exists(fonts[i])) {
-            io.Fonts->AddFontFromFileTTF(fonts[i].c_str(), fontSize, (!i) ? nullptr : &config, ranges);
+            io.Fonts->AddFontFromFileTTF(fonts[i].c_str(), fontSize, &config, ranges);
           }
         }
       } else {
         config.FontDataOwnedByAtlas = true;
         for (const auto &path : romfs::list()) {
           auto file = romfs::get(path);
-          io.Fonts->AddFontFromMemoryTTF(file.data(), file.size(), fontSize, &config);
+          io.Fonts->AddFontFromMemoryTTF(file.data(), file.size(), fontSize, &config, ranges);
         }
       }
       if (!io.Fonts->Fonts.empty()) io.Fonts->Build();
