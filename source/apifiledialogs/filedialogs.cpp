@@ -215,7 +215,7 @@ namespace {
       string out_path = parent_path + string("/") + ghc::filesystem::path(path).filename().string();
       std::ofstream out_file(out_path);
       #endif
-      if (!out_file.is_open()) {
+      if (out_file.is_open()) {
         out_file.write((const char *)file.data(), file.size());
         out_file.close();
       }
