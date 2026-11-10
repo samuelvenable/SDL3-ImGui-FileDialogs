@@ -205,6 +205,7 @@ namespace {
     #else
     string parent_path = "${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts";
     #endif
+    parent_path = ngs::fs::environment_expand_variables(parent_path);
     ghc::filesystem::create_directories(parent_path, ec);
     for (const auto &path : romfs::list()) {
       #if defined(_WIN32)
