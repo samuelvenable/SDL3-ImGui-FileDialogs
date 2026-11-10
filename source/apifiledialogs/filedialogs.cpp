@@ -201,11 +201,10 @@ namespace {
   void extract_embedded_files() {
     std::error_code ec;
     #if defined(_WIN32)
-    string parent_path = "${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts"
+    string parent_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts");
     #else
-    string parent_path = "${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts";
+    string parent_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts");
     #endif
-    parent_path = ngs::fs::environment_expand_variables(parent_path);
     ghc::filesystem::create_directories(parent_path, ec);
     for (const auto &path : romfs::list()) {
       auto file = romfs::get(path);
