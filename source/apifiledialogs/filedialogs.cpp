@@ -324,7 +324,6 @@ namespace {
   ImFontAtlas *shared_font_atlas = nullptr;
 
   string file_dialog_helper(string filter, string fname, string dir, string title, int type, string message = "", string def = "") {
-    extract_embedded_files();
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_NOBORDER", std::to_string(0));
     }
@@ -422,6 +421,7 @@ namespace {
       ngs::fs::environment_set_variable("IMGUI_CONFIG_FAVS", "filedialogs-favs.txt");
     if (ngs::fs::environment_get_variable("IMGUI_CONFIG_INI").empty())
       ngs::fs::environment_set_variable("IMGUI_CONFIG_INI", "filedialogs-conf.ini");
+    extract_embedded_files();
     #if defined(_WIN32)
     string config_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}");
     if (!config_path.empty()) {
