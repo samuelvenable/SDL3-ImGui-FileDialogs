@@ -449,8 +449,8 @@ namespace {
         auto file = romfs::get(path);
         if (!ghc::filesystem::path(path).filename().string().compare("LICENSE.txt")) {
           io.Fonts->AddFontFromMemoryTTF((void *)file.data(), file.size(), fontSize, ((!i) ? nullptr : &config), ranges);
+          i++;
         }
-        i++;
       }
       if (!io.Fonts->Fonts.empty()) io.Fonts->Build();
       ngs::fs::environment_set_variable("IMGUI_FONT_LOADED", std::to_string(1));
