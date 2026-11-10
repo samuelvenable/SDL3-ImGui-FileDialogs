@@ -40,15 +40,14 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl3.h>
 #include <imgui/imgui_impl_sdlrenderer3.h>
-
 #include <ImFileDialog/ImFileDialog.h>
 #include <ImFileDialog/ImFileDialogMacros.h>
-
 #include <msgbox/imguial_msgbox.h>
 
 #include <apifilesystem/filesystem.hpp>
 #include <apifilesystem/ghc/filesystem.hpp>
 #include <apifiledialogs/filedialogs.hpp>
+#include <romfs/romfs.hpp>
 
 #include <SDL3/SDL_video.h>
 #include <sys/stat.h>
@@ -198,6 +197,29 @@ namespace {
     numberInputBox
   };
 
+  void extract_embedded_files() {
+    std::error_code ec;
+    #if defined(_WIN32)
+    std::string parent_path = "${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts"
+    #else
+    std::string parent_path = "${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts";
+    #endif
+    ghc::filesystem::create_directories(parent_path, ec);
+    for (const auto &path : romfs::list()) {
+      #if defined(_WIN32)
+      std::wstring out_path = widen(parent_path + std::string("\\") + ghc::filesystem(path).filename().string());
+      std::wofstream out_file(out_path);
+      #else
+      std::string out_path = parent_path + std::string("/") + ghc::filesystem(path).filename().string();
+      std::ofstream out_file(out_path);
+      #endif
+      if (!out_file.is_open()) {
+        out_file.write((const char *)file.data(), file.size());
+        out_file.close();
+      }
+    }
+  }
+
   string expand_without_trailing_slash(string dname) {
     std::error_code ec;
     dname = ngs::fs::environment_expand_variables(dname);
@@ -300,6 +322,7 @@ namespace {
   ImFontAtlas *shared_font_atlas = nullptr;
 
   string file_dialog_helper(string filter, string fname, string dir, string title, int type, string message = "", string def = "") {
+    extract_embedded_files();
     if (ngs::fs::environment_get_variable("IMGUI_DIALOG_NOBORDER").empty()) {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_NOBORDER", std::to_string(0));
     }
