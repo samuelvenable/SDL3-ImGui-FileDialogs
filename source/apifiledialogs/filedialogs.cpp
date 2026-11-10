@@ -447,7 +447,7 @@ namespace {
       unsigned i = 0; config.FontDataOwnedByAtlas = true;
       for (const auto &path : romfs::list()) {
         auto file = romfs::get(path);
-        if (!ghc::filesystem::path(path).filename().string().compare("LICENSE.txt")) {
+        if (ghc::filesystem::path(path).filename().string().compare("LICENSE.txt")) {
           io.Fonts->AddFontFromMemoryTTF((void *)file.data(), file.size(), fontSize, ((!i) ? nullptr : &config), ranges);
           i++;
         }
