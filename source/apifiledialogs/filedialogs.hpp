@@ -32,7 +32,6 @@
 
 namespace ngs::im {
 
-  void ifd_load_fonts();
   std::string show_message(std::string message);
   std::string show_question(std::string message);
   std::string show_question_ext(std::string message);
@@ -54,7 +53,6 @@ namespace ngs::im {
 #else
 #define EXPORTED_FUNCTION extern "C" __attribute__((visibility("default")))
 #endif
-EXPORTED_FUNCTION void ifd_load_fonts();
 EXPORTED_FUNCTION char *show_message(char *message);
 EXPORTED_FUNCTION char *show_question(char *message);
 EXPORTED_FUNCTION char *show_question_ext(char *message);
