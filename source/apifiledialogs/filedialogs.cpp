@@ -461,7 +461,7 @@ namespace {
         config.FontDataOwnedByAtlas = true;
         for (const auto &path : romfs::list()) {
           auto file = romfs::get(path);
-          io.Fonts->AddFontFromMemoryTTF(file.data(), file.size(), fontSize, &config, ranges);
+          io.Fonts->AddFontFromMemoryTTF((void *)file.data(), file.size(), fontSize, &config, ranges);
         }
       }
       if (!io.Fonts->Fonts.empty()) io.Fonts->Build();
