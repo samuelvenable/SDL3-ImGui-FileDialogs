@@ -436,9 +436,9 @@ namespace {
       ini = ngs::fs::environment_expand_variables(config_path + "/${IMGUI_CONFIG_INI}");
     }
     #endif
-    extract_embedded_files();
     io.IniFilename = ((!ini.empty()) ? ini.c_str() : nullptr);
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
+      extract_embedded_files();
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
       ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
       ImFontConfig config;
