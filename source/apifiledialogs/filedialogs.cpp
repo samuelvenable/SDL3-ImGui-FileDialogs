@@ -439,14 +439,6 @@ namespace {
     extract_embedded_files();
     io.IniFilename = ((!ini.empty()) ? ini.c_str() : nullptr);
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
-      #if defined(_WIN32)
-      std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts");
-      #else
-      std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts");
-      #endif
-      if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty()) {
-        ngs::fs::environment_set_variable("IMGUI_FONT_PATH", fonts_path);
-      }
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
       ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
       ImFontConfig config;
