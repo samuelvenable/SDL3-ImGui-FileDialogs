@@ -439,32 +439,24 @@ namespace {
     extract_embedded_files();
     io.IniFilename = ((!ini.empty()) ? ini.c_str() : nullptr);
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
-      ngs::im::ifd_load_fonts();
+      #if defined(_WIN32)
+      std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts");
+      #else
+      std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts");
+      #endif
+      if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty()) {
+        ngs::fs::environment_set_variable("IMGUI_FONT_PATH", fonts_path);
+      }
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
       ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
       ImFontConfig config;
       config.MergeMode = true; ImFont *font = nullptr; ImWchar ranges[] = { 0x0020, 0xFFFF, 0 };
       float fontSize = strtof(ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").c_str(), nullptr);
-      #if defined(_WIN32)
-      if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH") == ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts")) {
-      #else
-      if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH") == ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts")) {
-      #endif
-        config.FontDataOwnedByAtlas = false;
-        for (unsigned i = 0; i < fonts.size(); i++) {
-          message_pump();
-          if (ngs::fs::file_exists(fonts[i])) {
-            io.Fonts->AddFontFromFileTTF(fonts[i].c_str(), fontSize, ((!i) ? nullptr : &config), ranges);
-          }
-        }
-      } else {
-        unsigned i = 0;
-        config.FontDataOwnedByAtlas = true;
-        for (const auto &path : romfs::list()) {
-          auto file = romfs::get(path);
-          io.Fonts->AddFontFromMemoryTTF((void *)file.data(), file.size(), fontSize, ((!i) ? nullptr : &config), ranges);
-          i++;
-        }
+      unsigned i = 0; config.FontDataOwnedByAtlas = true;
+      for (const auto &path : romfs::list()) {
+        auto file = romfs::get(path);
+        io.Fonts->AddFontFromMemoryTTF((void *)file.data(), file.size(), fontSize, ((!i) ? nullptr : &config), ranges);
+        i++;
       }
       if (!io.Fonts->Fonts.empty()) io.Fonts->Build();
       ngs::fs::environment_set_variable("IMGUI_FONT_LOADED", std::to_string(1));
@@ -812,25 +804,6 @@ namespace {
 
 namespace ngs::im {
 
-  void ifd_load_fonts() {
-    if (!fonts.empty()) fonts.clear();
-    #if defined(_WIN32)
-    std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts");
-    #else
-    std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts");
-    #endif
-    if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty()) {
-      ngs::fs::environment_set_variable("IMGUI_FONT_PATH", fonts_path);
-      fonts.push_back(ngs::fs::directory_contents_first(ngs::fs::environment_get_variable("IMGUI_FONT_PATH"), "*.ttf;*.otf;*.ttc", false, false));
-      while (!fonts[fonts.size() - 1].empty()) {
-        message_pump();
-        fonts.push_back(ngs::fs::directory_contents_next());
-      }
-      if (!fonts.empty()) fonts.pop_back();
-      ngs::fs::directory_contents_close();
-    }
-  }
-
   string get_open_filename(string filter, string fname) {
     return file_dialog_helper(((filter.empty()) ? "*.*" : filter), fname, ngs::fs::environment_get_variable(HOME_PATH), "Open", openFile);
   }
@@ -897,10 +870,6 @@ namespace ngs::im {
   }
 
 } // namespace ngs::im
-
-void ifd_load_fonts() {
-  ngs::im::ifd_load_fonts();
-}
 
 char *get_open_filename(char *filter, char *fname) {
   static string result;
