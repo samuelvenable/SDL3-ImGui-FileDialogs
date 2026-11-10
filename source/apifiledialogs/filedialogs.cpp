@@ -445,10 +445,23 @@ namespace {
       ImFontConfig config;
       config.MergeMode = true; ImFont *font = nullptr; ImWchar ranges[] = { 0x0020, 0xFFFF, 0 };
       float fontSize = strtof(ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").c_str(), nullptr);
-      for (unsigned i = 0; i < fonts.size(); i++) {
-        message_pump();
-        if (ngs::fs::file_exists(fonts[i])) {
-          io.Fonts->AddFontFromFileTTF(fonts[i].c_str(), fontSize, (!i) ? nullptr : &config, ranges);
+      #if defined(_WIN32)
+      if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH") == ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts")) {
+      #else
+      if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH") == ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts")) {
+      #endif
+        config.FontDataOwnedByAtlas = false;
+        for (unsigned i = 0; i < fonts.size(); i++) {
+          message_pump();
+          if (ngs::fs::file_exists(fonts[i])) {
+            io.Fonts->AddFontFromFileTTF(fonts[i].c_str(), fontSize, (!i) ? nullptr : &config, ranges);
+          }
+        }
+      } else {
+        config.FontDataOwnedByAtlas = true;
+        for (const auto &path : romfs::list()) {
+          auto file = romfs::get(path);
+          io.Fonts->AddFontFromMemoryTTF(file.data(), file.size(), fontSize, &config);
         }
       }
       if (!io.Fonts->Fonts.empty()) io.Fonts->Build();
