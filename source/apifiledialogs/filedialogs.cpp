@@ -209,10 +209,10 @@ namespace {
     ghc::filesystem::create_directories(parent_path, ec);
     for (const auto &path : romfs::list()) {
       #if defined(_WIN32)
-      wstring out_path = widen(parent_path + string("\\") + ghc::filesystem(path).filename().string());
+      wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
       std::wofstream out_file(out_path);
       #else
-      string out_path = parent_path + string("/") + ghc::filesystem(path).filename().string();
+      string out_path = parent_path + string("/") + ghc::filesystem::path(path).filename().string();
       std::ofstream out_file(out_path);
       #endif
       if (!out_file.is_open()) {
