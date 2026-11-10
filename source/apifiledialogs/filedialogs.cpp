@@ -799,15 +799,13 @@ namespace ngs::im {
 
   void ifd_load_fonts() {
     if (!fonts.empty()) fonts.clear();
-    if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty() && ngs::fs::environment_get_variable("IMGUI_FONT_FILES").empty()) {
-      fonts.push_back(ngs::fs::directory_contents_first(ngs::fs::executable_get_directory() + "fonts", "*.ttf;*.otf;*.ttc", false, false));
-      while (!fonts[fonts.size() - 1].empty()) {
-        message_pump();
-        fonts.push_back(ngs::fs::directory_contents_next());
-      }
-      if (!fonts.empty()) fonts.pop_back();
-      ngs::fs::directory_contents_close();
-    } else if (!ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty()) {
+    #if defined(_WIN32)
+    std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts");
+    #else
+    std::string fonts_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts");
+    #endif
+    if (ngs::fs::environment_get_variable("IMGUI_FONT_PATH").empty()) {
+      ngs::fs::environment_set_variable("IMGUI_FONT_PATH", fonts_path);
       fonts.push_back(ngs::fs::directory_contents_first(ngs::fs::environment_get_variable("IMGUI_FONT_PATH"), "*.ttf;*.otf;*.ttc", false, false));
       while (!fonts[fonts.size() - 1].empty()) {
         message_pump();
@@ -815,12 +813,6 @@ namespace ngs::im {
       }
       if (!fonts.empty()) fonts.pop_back();
       ngs::fs::directory_contents_close();
-    } else if (!ngs::fs::environment_get_variable("IMGUI_FONT_FILES").empty()) {
-      fonts = string_split(string_replace_all(ngs::fs::environment_get_variable("IMGUI_FONT_FILES"), "\r", ""), '\n');
-      while (!fonts.empty() && fonts[fonts.size() - 1].empty()) {
-        message_pump();
-        fonts.pop_back();
-      }
     }
   }
 
