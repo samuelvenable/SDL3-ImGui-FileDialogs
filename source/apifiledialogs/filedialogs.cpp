@@ -208,7 +208,7 @@ namespace {
     #endif
     ghc::filesystem::create_directories(parent_path, ec);
     auto file = romfs::get("LICENSE.txt");
-    std::filesystem::path out_path = parent_path / "LICENSE.txt";
+    std::filesystem::path out_path = std::filesystem::path(parent_path) / "LICENSE.txt";
     std::ofstream out_file(out_path);
     if (out_file.is_open()) {
       out_file.write((const char *)file.data(), file.size());
