@@ -208,7 +208,7 @@ namespace {
     ghc::filesystem::create_directories(parent_path, ec);
     auto file = romfs::get("LICENSE.txt");
     #if defined(_WIN32)
-    wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
+    wstring out_path = widen(parent_path + string("\\LICENSE.txt"));
     std::wofstream out_file(out_path);
     if (out_file.is_open()) {
       wstring file_data = widen((const char *)file.data());
@@ -216,7 +216,7 @@ namespace {
       out_file.close();
     }
     #else
-    string out_path = parent_path + string("/") + ghc::filesystem::path(path).filename().string();
+    string out_path = parent_path + string("/LICENSE.txt");
     std::ofstream out_file(out_path);
     if (out_file.is_open()) {
       out_file.write((const char *)file.data(), file.size());
