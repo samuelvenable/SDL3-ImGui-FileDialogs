@@ -198,7 +198,7 @@ namespace {
     numberInputBox
   };
 
-  void extract_embedded_files() {
+  void extract_embedded_license_text_for_fonts() {
     std::error_code ec;
     #if defined(_WIN32)
     string parent_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}\\fonts");
@@ -206,25 +206,23 @@ namespace {
     string parent_path = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}/.config/${IMGUI_CONFIG_FOLDER}/fonts");
     #endif
     ghc::filesystem::create_directories(parent_path, ec);
-    for (const auto &path : romfs::list()) {
-      auto file = romfs::get(path);
-      #if defined(_WIN32)
-      wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
-      std::wofstream out_file(out_path);
-      if (out_file.is_open()) {
-        wstring file_data = widen((const char *)file.data());
-        out_file.write(file_data.c_str(), file.size());
-        out_file.close();
-      }
-      #else
-      string out_path = parent_path + string("/") + ghc::filesystem::path(path).filename().string();
-      std::ofstream out_file(out_path);
-      if (out_file.is_open()) {
-        out_file.write((const char *)file.data(), file.size());
-        out_file.close();
-      }
-      #endif
+    auto file = romfs::get("LICENSE.txt");
+    #if defined(_WIN32)
+    wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
+    std::wofstream out_file(out_path);
+    if (out_file.is_open()) {
+      wstring file_data = widen((const char *)file.data());
+      out_file.write(file_data.c_str(), file.size());
+      out_file.close();
     }
+    #else
+    string out_path = parent_path + string("/") + ghc::filesystem::path(path).filename().string();
+    std::ofstream out_file(out_path);
+    if (out_file.is_open()) {
+      out_file.write((const char *)file.data(), file.size());
+      out_file.close();
+    }
+    #endif
   }
 
   string expand_without_trailing_slash(string dname) {
@@ -443,7 +441,7 @@ namespace {
     #endif
     io.IniFilename = ((!ini.empty()) ? ini.c_str() : nullptr);
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
-      extract_embedded_files();
+      extract_embedded_license_text_for_fonts();
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
       ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
       ImFontConfig config;
