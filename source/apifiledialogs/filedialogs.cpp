@@ -33,6 +33,7 @@
 #include <cctype>
 #include <climits>
 #include <cstdlib>
+#include <algorithm>
 #include <filesystem>
 #include <sstream>
 #include <fstream>
@@ -439,7 +440,9 @@ namespace {
       config.MergeMode = true; ImFont *font = nullptr; ImWchar ranges[] = { 0x0020, 0xFFFF, 0 };
       float fontSize = strtof(ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").c_str(), nullptr);
       unsigned i = 0; config.FontDataOwnedByAtlas = true;
-      for (const auto &path : romfs::list()) {
+      auto paths = romfs::list();
+      std::sort(paths.begin(), paths.end());
+      for (const auto &path : paths) {
         auto file = romfs::get(path);
         if (ghc::filesystem::path(path).filename().string().compare("LICENSE.txt")) {
           io.Fonts->AddFontFromMemoryTTF((void *)file.data(), file.size(), fontSize, ((!i) ? nullptr : &config), ranges);
