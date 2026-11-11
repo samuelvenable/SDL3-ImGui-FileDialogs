@@ -211,14 +211,18 @@ namespace {
       #if defined(_WIN32)
       wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
       std::wofstream out_file(out_path);
+      if (out_file.is_open()) {
+        out_file.write((const wchar_t *)file.data(), file.size());
+        out_file.close();
+      }
       #else
       string out_path = parent_path + string("/") + ghc::filesystem::path(path).filename().string();
       std::ofstream out_file(out_path);
-      #endif
       if (out_file.is_open()) {
         out_file.write((const char *)file.data(), file.size());
         out_file.close();
       }
+      #endif
     }
   }
 
