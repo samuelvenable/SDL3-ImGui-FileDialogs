@@ -212,7 +212,8 @@ namespace {
       wstring out_path = widen(parent_path + string("\\") + ghc::filesystem::path(path).filename().string());
       std::wofstream out_file(out_path);
       if (out_file.is_open()) {
-        out_file.write((const wchar_t *)file.data(), file.size());
+        wstring file_data = widen((const char *)file.data());
+        out_file.write(file_data.c_str(), file.size());
         out_file.close();
       }
       #else
