@@ -7,6 +7,8 @@ if(APPLE)
 endif()
 #set(BUILD_SHARED_LIBS OFF)
 #set(IFD_USE_LIBRARY_BUILD OFF)
+#set(IFD_USE_LIBRARY_BUILD_ALL OFF)
+#set(IFD_USE_BUILD_ALL OFF)
 #set(IFD_USE_BASIC_ICONS ON)
 #set(IFD_USE_CATALOG_PACKAGES ON)
 if((WIN32 OR APPLE) OR (UNIX AND NOT APPLE AND IFD_USE_CATALOG_PACKAGES))
@@ -91,6 +93,53 @@ if(IFD_USE_LIBRARY_BUILD)
 		source/msgbox/imguial_msgbox.cpp
 	)
 	add_library(filedialogs ${SOURCES})
+elseif(IFD_USE_LIBRARY_BUILD_ALL)
+	set(SOURCES
+		source/apifiledialogs/filedialogs.cpp
+		source/apifilesystem/filesystem.cpp
+		source/ImFileDialog/ImFileDialog.cpp
+		source/imgui/imgui.cpp
+		source/imgui/imgui_demo.cpp
+		source/imgui/imgui_draw.cpp
+		source/imgui/imgui_impl_sdl3.cpp
+		source/imgui/imgui_impl_sdlrenderer3.cpp
+		source/imgui/imgui_tables.cpp
+		source/imgui/imgui_widgets.cpp
+		source/msgbox/imguial_msgbox.cpp
+	)
+	add_library(filedialogs STATIC ${SOURCES})
+	add_library(filedialogs SHARED ${SOURCES})
+elseif(IFD_USE_BUILD_ALL)
+	set(LIBRARY_SOURCES
+		source/apifiledialogs/filedialogs.cpp
+		source/apifilesystem/filesystem.cpp
+		source/ImFileDialog/ImFileDialog.cpp
+		source/imgui/imgui.cpp
+		source/imgui/imgui_demo.cpp
+		source/imgui/imgui_draw.cpp
+		source/imgui/imgui_impl_sdl3.cpp
+		source/imgui/imgui_impl_sdlrenderer3.cpp
+		source/imgui/imgui_tables.cpp
+		source/imgui/imgui_widgets.cpp
+		source/msgbox/imguial_msgbox.cpp
+	)
+	add_library(filedialogs STATIC ${LIBRARY_SOURCES})
+	add_library(filedialogs SHARED ${LIBRARY_SOURCES})
+	set(EXECUTABLE_SOURCES
+		source/main.cpp
+		source/apifiledialogs/filedialogs.cpp
+		source/apifilesystem/filesystem.cpp
+		source/ImFileDialog/ImFileDialog.cpp
+		source/imgui/imgui.cpp
+		source/imgui/imgui_demo.cpp
+		source/imgui/imgui_draw.cpp
+		source/imgui/imgui_impl_sdl3.cpp
+		source/imgui/imgui_impl_sdlrenderer3.cpp
+		source/imgui/imgui_tables.cpp
+		source/imgui/imgui_widgets.cpp
+		source/msgbox/imguial_msgbox.cpp
+	)
+	add_executable(filedialogs ${EXECUTABLE_SOURCES})
 else()
 	set(SOURCES
 		source/main.cpp
