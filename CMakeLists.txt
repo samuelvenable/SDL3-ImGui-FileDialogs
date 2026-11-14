@@ -4,7 +4,7 @@ project(filedialogs)
 if(APPLE)
 	set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0")
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
-endif()f
+endif()
 #set(BUILD_SHARED_LIBS OFF)
 #set(IFD_USE_LIBRARY_BUILD OFF)
 #set(IFD_USE_LIBRARY_BUILD_ALL OFF)
