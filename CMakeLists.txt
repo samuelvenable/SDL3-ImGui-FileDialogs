@@ -78,84 +78,32 @@ if((WIN32 OR APPLE) OR (UNIX AND NOT APPLE AND IFD_USE_CATALOG_PACKAGES))
 		set(CATALOG_REQ_TYPE PREFER_STATIC)
 	endif()
 endif()
+set(SOURCES
+	source/apifiledialogs/filedialogs.cpp
+	source/apifilesystem/filesystem.cpp
+	source/ImFileDialog/ImFileDialog.cpp
+	source/imgui/imgui.cpp
+	source/imgui/imgui_demo.cpp
+	source/imgui/imgui_draw.cpp
+	source/imgui/imgui_impl_sdl3.cpp
+	source/imgui/imgui_impl_sdlrenderer3.cpp
+	source/imgui/imgui_tables.cpp
+	source/imgui/imgui_widgets.cpp
+	source/msgbox/imguial_msgbox.cpp
+)
+add_library(filedialogs-object OBJECT ${SOURCES})
+set_property(TARGET filedialogs-object PROPERTY POSITION_INDEPENDENT_CODE ON)
 if(IFD_USE_LIBRARY_BUILD)
-	set(SOURCES
-		source/apifiledialogs/filedialogs.cpp
-		source/apifilesystem/filesystem.cpp
-		source/ImFileDialog/ImFileDialog.cpp
-		source/imgui/imgui.cpp
-		source/imgui/imgui_demo.cpp
-		source/imgui/imgui_draw.cpp
-		source/imgui/imgui_impl_sdl3.cpp
-		source/imgui/imgui_impl_sdlrenderer3.cpp
-		source/imgui/imgui_tables.cpp
-		source/imgui/imgui_widgets.cpp
-		source/msgbox/imguial_msgbox.cpp
-	)
-	add_library(filedialogs ${SOURCES})
+	add_library(filedialogs-static $<TARGET_OBJECTS:filedialogs-object>)
 elseif(IFD_USE_LIBRARY_BUILD_ALL)
-	set(SOURCES
-		source/apifiledialogs/filedialogs.cpp
-		source/apifilesystem/filesystem.cpp
-		source/ImFileDialog/ImFileDialog.cpp
-		source/imgui/imgui.cpp
-		source/imgui/imgui_demo.cpp
-		source/imgui/imgui_draw.cpp
-		source/imgui/imgui_impl_sdl3.cpp
-		source/imgui/imgui_impl_sdlrenderer3.cpp
-		source/imgui/imgui_tables.cpp
-		source/imgui/imgui_widgets.cpp
-		source/msgbox/imguial_msgbox.cpp
-	)
-	add_library(filedialogs STATIC ${SOURCES})
-	add_library(filedialogs SHARED ${SOURCES})
+	add_library(filedialogs-static STATIC $<TARGET_OBJECTS:filedialogs-object>)
+	add_library(filedialogs-shared SHARED $<TARGET_OBJECTS:filedialogs-object>)
 elseif(IFD_USE_BUILD_ALL)
-	set(LIBRARY_SOURCES
-		source/apifiledialogs/filedialogs.cpp
-		source/apifilesystem/filesystem.cpp
-		source/ImFileDialog/ImFileDialog.cpp
-		source/imgui/imgui.cpp
-		source/imgui/imgui_demo.cpp
-		source/imgui/imgui_draw.cpp
-		source/imgui/imgui_impl_sdl3.cpp
-		source/imgui/imgui_impl_sdlrenderer3.cpp
-		source/imgui/imgui_tables.cpp
-		source/imgui/imgui_widgets.cpp
-		source/msgbox/imguial_msgbox.cpp
-	)
-	add_library(filedialogs STATIC ${LIBRARY_SOURCES})
-	add_library(filedialogs SHARED ${LIBRARY_SOURCES})
-	set(EXECUTABLE_SOURCES
-		source/main.cpp
-		source/apifiledialogs/filedialogs.cpp
-		source/apifilesystem/filesystem.cpp
-		source/ImFileDialog/ImFileDialog.cpp
-		source/imgui/imgui.cpp
-		source/imgui/imgui_demo.cpp
-		source/imgui/imgui_draw.cpp
-		source/imgui/imgui_impl_sdl3.cpp
-		source/imgui/imgui_impl_sdlrenderer3.cpp
-		source/imgui/imgui_tables.cpp
-		source/imgui/imgui_widgets.cpp
-		source/msgbox/imguial_msgbox.cpp
-	)
-	add_executable(filedialogs ${EXECUTABLE_SOURCES})
+	add_library(filedialogs-static STATIC $<TARGET_OBJECTS:filedialogs-object>)
+	add_library(filedialogs-shared SHARED $<TARGET_OBJECTS:filedialogs-object>)
+	add_executable(filedialogs source/main.cpp $<TARGET_OBJECTS:filedialogs-object>)
 else()
-	set(SOURCES
-		source/main.cpp
-		source/apifiledialogs/filedialogs.cpp
-		source/apifilesystem/filesystem.cpp
-		source/ImFileDialog/ImFileDialog.cpp
-		source/imgui/imgui.cpp
-		source/imgui/imgui_demo.cpp
-		source/imgui/imgui_draw.cpp
-		source/imgui/imgui_impl_sdl3.cpp
-		source/imgui/imgui_impl_sdlrenderer3.cpp
-		source/imgui/imgui_tables.cpp
-		source/imgui/imgui_widgets.cpp
-		source/msgbox/imguial_msgbox.cpp
-	)
-	add_executable(filedialogs ${SOURCES})
+	add_executable(filedialogs source/main.cpp $<TARGET_OBJECTS:filedialogs-object>)
 endif()
 if((WIN32 OR APPLE) OR (UNIX AND NOT APPLE AND IFD_USE_CATALOG_PACKAGES))
 	cl_add_dep(filedialogs SDL3)
