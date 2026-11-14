@@ -134,7 +134,7 @@ Ubuntu:
 
 # Notes
 
-- You are able to statically link SDL3 on all platforms; doing so requires passing `-DIFD_USE_CATALOG_PACKAGES=ON` to CMake.
+- You are able to statically link SDL3 on all platforms besides OpenBSD; requires passing `-DIFD_USE_CATALOG_PACKAGES=ON` to CMake.
 - The OS-default icon theme is used when `-DIFD_USE_BASIC_ICONS=ON` is not passed to CMake, (which may add dependencies).
 - To use custom 32x32 pixel `*`.png icons for files and folders in the file dialogs, pass `-DIFD_USE_BASIC_ICONS=ON` to CMake.
 - Change the `IMGUI_FILE_ICON` and `IMGUI_FOLDER_ICON` environment variables to the path of the 32x32 pixel `*`.png icons.
