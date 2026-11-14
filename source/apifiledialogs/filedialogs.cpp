@@ -492,7 +492,7 @@ namespace {
       FcObjectSetDestroy(objectSet);
       FcPatternDestroy(pattern);
       FcConfigDestroy(config);
-      std::sort(notoFonts.begin(), notoFonts.end(), [](const FontEntry& a, const FontEntry& b) {
+      std::sort(notoFonts.begin(), notoFonts.end(), [](const FontEntry &a, const FontEntry &b) {
         if (a.family == "Noto Sans") return true;
         if (b.family == "Noto Sans") return false;
         return a.family < b.family;
