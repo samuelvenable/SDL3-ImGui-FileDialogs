@@ -471,7 +471,7 @@ namespace {
       };
       std::vector<FontEntry> notoFonts;
       if (fontSet) {
-        for (int i = 0; i < fontSet->nfont; ++i) {
+        for (int i = 0; i < fontSet->nfont; i++) {
           FcPattern *font = fontSet->fonts[i];
           FcChar8 *family = nullptr;
           FcChar8 *file = nullptr;
