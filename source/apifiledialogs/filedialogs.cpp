@@ -437,6 +437,7 @@ namespace {
       ini = ngs::fs::environment_expand_variables(config_path + "/${IMGUI_CONFIG_INI}");
     }
     #endif
+    ImWchar ranges[] = { 0x0020, 0xFFFF, 0 };
     io.IniFilename = ((!ini.empty()) ? ini.c_str() : nullptr);
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
@@ -478,9 +479,10 @@ namespace {
           if (FcPatternGetString(font, FC_FAMILY, 0, &family) == FcResultMatch &&
             FcPatternGetString(font, FC_FILE, 0, &file) == FcResultMatch) {
             FcPatternGetInteger(font, FC_INDEX, 0, &index);
-            std::string familyStr(reinterpret_cast<const char*>(family));
-            std::string fileStr(reinterpret_cast<const char*>(file));
+            std::string familyStr((const char *)family);
+            std::string fileStr((const char *)file);
             if (familyStr.rfind("Noto Sans", 0) == 0 &&
+              fileStr.find("Regular") != std::string::npos &&
               familyStr.find("Emoji") == std::string::npos &&
               familyStr.find("Mono") == std::string::npos) {
               notoFonts.push_back({familyStr, fileStr, index});
@@ -498,11 +500,10 @@ namespace {
         return a.family < b.family;
       });
       ImFontConfig imConfig;
-      imConfig.MergeMode = false;
+      imConfig.MergeMode = true;
       for (size_t i = 0; i < notoFonts.size(); i++) {
         imConfig.FontNo = notoFonts[i].index;
-        io.Fonts->AddFontFromFileTTF(notoFonts[i].file.c_str(), fontSize, &imConfig);
-        imConfig.MergeMode = true;
+        io.Fonts->AddFontFromFileTTF(notoFonts[i].file.c_str(), fontSize, ((!i) ? nullptr : &imConfig), ranges);
       }
       if (notoFonts.empty()) {
         io.Fonts->AddFontDefault();
