@@ -50,7 +50,11 @@
 #include <apifilesystem/filesystem.hpp>
 #include <apifilesystem/ghc/filesystem.hpp>
 #include <apifiledialogs/filedialogs.hpp>
+#if (defined(_WIN32) || defined(__APPLE__))
 #include <romfs/romfs.hpp>
+#else
+#include <fontconfig/fontconfig.h>
+#endif
 
 #include <SDL3/SDL_video.h>
 #include <sys/stat.h>
@@ -200,6 +204,7 @@ namespace {
     numberInputBox
   };
 
+  #if (defined(_WIN32) || defined(__APPLE__))
   void extract_embedded_license_text_for_fonts() {
     std::error_code ec;
     #if defined(_WIN32)
@@ -216,6 +221,7 @@ namespace {
       out_file.close();
     }
   }
+  #endif
 
   string expand_without_trailing_slash(string dname) {
     std::error_code ec;
@@ -402,7 +408,7 @@ namespace {
     if (!shared_font_atlas)
       shared_font_atlas = new ImFontAtlas();
     ImGui::CreateContext(shared_font_atlas);
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO &io = ImGui::GetIO(); (void)io;
     #if defined(_WIN32)
     if (ngs::fs::environment_get_variable("IMGUI_CONFIG_HOME").empty())
       ngs::fs::environment_set_variable("IMGUI_CONFIG_HOME", ngs::fs::environment_get_variable("USERPROFILE"));
@@ -433,12 +439,12 @@ namespace {
     #endif
     io.IniFilename = ((!ini.empty()) ? ini.c_str() : nullptr);
     if (ngs::fs::environment_get_variable("IMGUI_FONT_LOADED") != std::to_string(1)) {
-      extract_embedded_license_text_for_fonts();
       if (ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").empty())
-      ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
-      ImFontConfig config;
-      config.MergeMode = true; ImFont *font = nullptr; ImWchar ranges[] = { 0x0020, 0xFFFF, 0 };
+        ngs::fs::environment_set_variable("IMGUI_FONT_SIZE", std::to_string(20));
       float fontSize = strtof(ngs::fs::environment_get_variable("IMGUI_FONT_SIZE").c_str(), nullptr);
+      #if (defined(_WIN32) || defined(__APPLE__))
+      extract_embedded_license_text_for_fonts();
+      ImFontConfig config; config.MergeMode = true;
       unsigned i = 0; config.FontDataOwnedByAtlas = true;
       auto paths = romfs::list();
       std::sort(paths.begin(), paths.end());
@@ -449,6 +455,59 @@ namespace {
           i++;
         }
       }
+      #else
+      FcInit();
+      FcConfig *config = FcInitLoadConfigAndFonts();
+      FcPattern *pattern = FcPatternCreate();
+      FcPatternAddInteger(pattern, FC_WEIGHT, FC_WEIGHT_REGULAR);
+      FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ROMAN);
+      FcObjectSet *objectSet = FcObjectSetBuild(FC_FAMILY, FC_FILE, FC_INDEX, nullptr);
+      FcFontSet *fontSet = FcFontList(config, pattern, objectSet);
+      struct FontEntry {
+        std::string family;
+        std::string file;
+        int index;
+      };
+      std::vector<FontEntry> notoFonts;
+      if (fontSet) {
+        for (int i = 0; i < fontSet->nfont; ++i) {
+          FcPattern *font = fontSet->fonts[i];
+          FcChar8 *family = nullptr;
+          FcChar8 *file = nullptr;
+          int index = 0;
+          if (FcPatternGetString(font, FC_FAMILY, 0, &family) == FcResultMatch &&
+            FcPatternGetString(font, FC_FILE, 0, &file) == FcResultMatch) {
+            FcPatternGetInteger(font, FC_INDEX, 0, &index);
+          std::string familyStr(reinterpret_cast<const char*>(family));
+          std::string fileStr(reinterpret_cast<const char*>(file));
+          if (familyStr.rfind("Noto Sans", 0) == 0 &&
+            familyStr.find("Emoji") == std::string::npos &&
+            familyStr.find("Mono") == std::string::npos) {
+            notoFonts.push_back({familyStr, fileStr, index});
+            }
+            }
+        }
+        FcFontSetDestroy(fontSet);
+      }
+      FcObjectSetDestroy(objectSet);
+      FcPatternDestroy(pattern);
+      FcConfigDestroy(config);
+      std::sort(notoFonts.begin(), notoFonts.end(), [](const FontEntry& a, const FontEntry& b) {
+        if (a.family == "Noto Sans") return true;
+        if (b.family == "Noto Sans") return false;
+        return a.family < b.family;
+      });
+      ImFontConfig imConfig;
+      imConfig.MergeMode = false;
+      for (size_t i = 0; i < notoFonts.size(); i++) {
+        imConfig.FontNo = notoFonts[i].index;
+        io.Fonts->AddFontFromFileTTF(notoFonts[i].file.c_str(), fontSize, &imConfig);
+        imConfig.MergeMode = true;
+      }
+      if (notoFonts.empty()) {
+        io.Fonts->AddFontDefault();
+      }
+      #endif
       if (!io.Fonts->Fonts.empty()) io.Fonts->Build();
       ngs::fs::environment_set_variable("IMGUI_FONT_LOADED", std::to_string(1));
     }
