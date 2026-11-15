@@ -48,11 +48,7 @@ set(lunasvg_headers
     source/svgtextelement.h
 )
 
-if(IFD_USE_CATALOG_PACKAGES)
-    add_library(lunasvg STATIC ${lunasvg_sources} ${lunasvg_headers})
-else()
-    add_library(lunasvg SHARED ${lunasvg_sources} ${lunasvg_headers})
-endif()
+add_library(lunasvg STATIC ${lunasvg_sources} ${lunasvg_headers})
 add_library(lunasvg::lunasvg ALIAS lunasvg)
 
 target_link_libraries(lunasvg PRIVATE plutovg::plutovg)
