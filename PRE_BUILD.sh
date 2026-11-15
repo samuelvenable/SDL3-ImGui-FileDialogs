@@ -1,2 +1,3 @@
 #!/bin/bash
-cp -fr "${0%/*}/.cache/catalog/src_*/src/include/SDL3" "${0%/*}/source/SDL3";
+cd "${0%/*}/.cache/catalog/src_*/src/include"
+cp -fr "SDL3" "${0%/*}/source/SDL3";
