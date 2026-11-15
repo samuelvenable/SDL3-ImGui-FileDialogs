@@ -33,11 +33,7 @@ set(plutovg_headers
     source/plutovg-stb-truetype.h
 )
 
-if(IFD_USE_CATALOG_PACKAGES)
-    add_library(plutovg STATIC ${plutovg_sources} ${plutovg_headers})
-else()
-    add_library(plutovg SHARED ${plutovg_sources} ${plutovg_headers})
-endif()
+add_library(plutovg STATIC ${plutovg_sources} ${plutovg_headers})
 add_library(plutovg::plutovg ALIAS plutovg)
 
 set_target_properties(plutovg PROPERTIES
