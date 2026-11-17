@@ -371,7 +371,7 @@ namespace {
       ngs::fs::environment_set_variable("IMGUI_DIALOG_PASSWORD", std::to_string(1));
     }
     #if defined(SDL_VIDEO_DRIVER_X11)
-    ngs::fs::environment_set_variable("SDL_VIDEODRIVER", "x11");
+    ngs::fs::environment_set_variable("SDL_VIDEO_DRIVER", "x11");
     #endif
     SDL_Window *window = nullptr;
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD);
