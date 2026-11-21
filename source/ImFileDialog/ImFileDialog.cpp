@@ -500,8 +500,9 @@ namespace ifd {
     ghc::filesystem::path configPath = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config\\${IMGUI_CONFIG_FOLDER}");
     if (!ngs::fs::directory_exists(configPath.string()))
       ngs::fs::directory_create(configPath.string());
-    int attr = GetFileAttributesW(configPath.wstring().c_str());
-    if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0) SetFileAttributesW(configPath.wstring().c_str(), attr | FILE_ATTRIBUTE_HIDDEN);
+    ghc::filesystem::path hiddenConfigPath = ngs::fs::environment_expand_variables("${IMGUI_CONFIG_HOME}\\.config");
+    int attr = GetFileAttributesW(hiddenConfigPath.wstring().c_str());
+    if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0) SetFileAttributesW(hiddenConfigPath.wstring().c_str(), attr | FILE_ATTRIBUTE_HIDDEN);
     if (ngs::fs::environment_get_variable("IMGUI_CONFIG_FAVS").empty())
       ngs::fs::environment_set_variable("IMGUI_CONFIG_FAVS", "filedialogs-favs.txt");
     if (!ngs::fs::file_exists(configPath.string() + "\\${IMGUI_CONFIG_FAVS}")) {
